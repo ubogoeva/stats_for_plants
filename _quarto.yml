@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "stats_for_plants"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - lectures.qmd
+      - about.qmd
+
+format:
+  html:
+    theme: yeti
+    css: styles.css
+    toc: true
+
+editor: visual
+
