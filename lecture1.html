@@ -404,22 +404,22 @@
 </section>
 <section id="информация-о-курсе" class="slide level2">
 <h2>Информация о курсе</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <ul>
-<li><p>12 лекций в zoom по одной лекции в неделю: по средам в 16.00 МСК.</p></li>
+<li><p>12 лекций в zoom по одной лекции в неделю: по средам в ~16.30 МСК.</p></li>
 <li><p>Домашние задания (по желанию).</p></li>
 <li><p>Будет запись каждой лекции, после занятия выложена на диск.</p></li>
 </ul>
-</div><div class="column" style="width:40%;">
-
-</div>
-</div>
+<p>Структура курса:</p>
+<ul>
+<li><p>5 лекций по работе в R</p></li>
+<li><p>Статистические методы</p></li>
+</ul>
 </section>
 <section id="почему-важно-изучать-r-в-контексте-статистики-и-селекции" class="slide level2">
 <h2>Почему важно изучать R в контексте статистики и селекции?</h2>
 <ol type="1">
 <li>Большинство статистических расчетов реализовано в R, следовательно можно воспользоваться готовым скриптом для своей задачи (с нужными преобразованиями).</li>
+<li>R предоставляет обширный функционал для быстрой и удобной работы с табличными данными (а наши данные являются табличными).</li>
 <li>Воспроизводимость результатов, что реализуется как выкладыванием кода, так и с помощью публикации результатов в системах <code>rmarkdown</code> и <a href="https://quarto.org/">Quarto</a>.</li>
 <li>R – бесплатный и с открытым исходным кодом.</li>
 </ol>
@@ -871,7 +871,7 @@
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>vect_for_even <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">10</span>)</span>
 <span id="cb72-2"><a href="#cb72-2"></a>vect_for_even</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 40 43 80 12 81 46 97 70 89 98</code></pre>
+<pre><code> [1] 96 35 28 32 84 82 87 36 74 57</code></pre>
 </div>
 </div>
 <p>Задача вывести все четные элементы, используя знания об индексации векторов. Оператор остатка от деления: <code>%%</code></p></li>
@@ -879,14 +879,14 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>vect_for_even <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
+<pre><code> [1]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE</code></pre>
 </div>
 </div></li>
 <li class="fragment"><p>Далее используем полученный логический вектор в качестве индекса к исходному:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>vect_for_even[vect_for_even <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 40 80 12 46 70 98</code></pre>
+<pre><code>[1] 96 28 32 84 82 36 74</code></pre>
 </div>
 </div></li>
 </ul>
