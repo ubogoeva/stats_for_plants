@@ -2,6 +2,10 @@
 title: "Список лекций"
 ---
 
-Здесь будет размещаться список лекций.
+Здесь будет размещаться список презентаций и видеозаписей.
 
-[Лекция 1. Введение в R.](lecture1.qmd)
+Лекция 1. Введение в R.
+
+-   [Слайды](lecture1.qmd).
+
+-   [Запись](https://drive.google.com/drive/folders/1yJvMjnJbLjYiStoRcBMN5DPSs9ooJzOc?usp=drive_link).
