@@ -12,7 +12,7 @@ title: "Список лекций"
 
 Лекция 2. Разбор селекционного примера
 
--   [Слайды](https://github.com/ubogoeva/stats_for_plants/raw/master/%D0%94%D0%BB%D1%8F%20%D0%B2%D1%81%D1%82%D1%80%D0%B5%D1%87%D0%B8%207%20%D1%84%D0%B5%D0%B2%D1%80%D0%B0%D0%BB%D1%8F_upd.pptx)
+-   [Слайды](https://github.com/ubogoeva/stats_for_plants/blob/master/%D0%9F%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F_2_%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D1%8F.pdf)
 
 -   [Скрипт](https://github.com/ubogoeva/stats_for_plants/blob/master/lm_factor_analysis.R) (при переходе на страницу нажмите на "download raw file" в правом верхнем углу)
 
