@@ -871,7 +871,7 @@
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>vect_for_even <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">10</span>)</span>
 <span id="cb72-2"><a href="#cb72-2"></a>vect_for_even</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 96 35 28 32 84 82 87 36 74 57</code></pre>
+<pre><code> [1]  9 42 76 37 51 38 60 49 45 90</code></pre>
 </div>
 </div>
 <p>Задача вывести все четные элементы, используя знания об индексации векторов. Оператор остатка от деления: <code>%%</code></p></li>
@@ -879,14 +879,14 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>vect_for_even <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE</code></pre>
+<pre><code> [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE</code></pre>
 </div>
 </div></li>
 <li class="fragment"><p>Далее используем полученный логический вектор в качестве индекса к исходному:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>vect_for_even[vect_for_even <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 96 28 32 84 82 36 74</code></pre>
+<pre><code>[1] 42 76 38 60 90</code></pre>
 </div>
 </div></li>
 </ul>
