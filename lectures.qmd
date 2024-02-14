@@ -28,7 +28,7 @@ title: "Список лекций"
 
 -   Про пределы погрешностей -- [статья](https://ubogoeva.github.io/R4Analytics/posts/types_of_error_bars.html).
 
--   Скрипт и данные.
+-   [Скрипт](https://github.com/ubogoeva/stats_for_plants/blob/master/lesson3_variance_calc.R) и [данные](https://github.com/ubogoeva/stats_for_plants/raw/master/data/ANOVA%20single%20location%20EPBA6.xlsx).
 
 Лекция 4. Визуализация данных с помощью [`ggplot2`](https://ggplot2.tidyverse.org/)
 
