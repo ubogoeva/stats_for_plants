@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.353">
 
   <meta name="author" content="Elena U">
-  <title>stats_for_plants - Язык программирования R для анализа данных: лекция 6</title>
+  <title>stats_for_plants - R и статистика в селекции: лекция 3</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -96,6 +96,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="styles.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -393,8 +394,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Язык программирования R для анализа данных: лекция 6</h1>
-  <p class="subtitle">Введение в статистику вывода</p>
+  <h1 class="title">R и статистика в селекции: лекция 3</h1>
+  <p class="subtitle">Введение в статистику</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -408,22 +409,58 @@ Elena U
 <section id="план-лекции" class="slide level2">
 <h2>План лекции</h2>
 <ul>
-<li><p>О чем статистика?</p></li>
-<li><p>Типы переменных и типы шкал</p></li>
-<li><p>Понятие генеральной совокупности и выборки</p></li>
-<li><p>Описательные статистики</p></li>
-<li><p>Статистика вывода, что такое p-value</p></li>
+<li><p>О чем статистика? Описательная и статистика вывода.</p></li>
+<li><p>Типы переменных и типы шкал.</p></li>
+<li><p>Понятие генеральной совокупности и выборки.</p></li>
+<li><p>Описательные статистики.</p></li>
+<li><p>Практика в R.</p></li>
 </ul>
+</section>
+<section id="данные-для-работы" class="slide level2">
+<h2>Данные для работы</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>df <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">'data/ANOVA single location EPBA6.xlsx'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  ID    ENTRY Pedigree       LOC BLOCK  PLOT YIELD
+  &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 HY1       1 Fem1 / Male1     1     1     1  66.3
+2 HY9       9 Fem3 / Male1     1     1     2  75.1
+3 HY15     15 Fem4 / Male3     1     1     3  81.8
+4 HY7       7 Fem2 / Male3     1     1     4  73  
+5 HY3       3 Fem1 / Male3     1     1     5  68.7
+6 HY6       6 Fem2 / Male2     1     1     6  72.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># альтернативно можно прочитать гугл таблицу с гугла диска</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># library(googlesheets4) # для чтения гугл таблиц с гугл диска</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># df &lt;- read_sheet('https://docs.google.com/spreadsheets/d/1KOOgXPipcaa7WWRxgBCrEGbNfrgW8JV0L-z2UvHk1pE/edit#gid=402013081') # понадобится зайти в гугл</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="предмет-статистики" class="slide level2">
 <h2>Предмет статистики</h2>
 <p>Вообще, статистика делится на два блока:</p>
 <ul>
 <li><p>Описательная статистика (<em>descriptive</em> statistics)<br>
-Описываем имеющиеся у нас данные с помощью статистик, например среднее, медиана, дисперсия</p></li>
+Описываем имеющиеся у нас данные с помощью статистик, например среднее, медиана, дисперсия, стандартное отклонение и тп.</p></li>
 <li><p>Статистика вывода (<em>inferential</em> statistics)<br>
-Пытаемся сделать вывод о всей генеральной совокупности данных.</p></li>
+Пытаемся сделать вывод о всей генеральной совокупности данных. Например, стандартная ошибка, доверительный интервал и различные тестовые статистики - t-статистика, F-статистика, <span class="math inline">\(\chi^2\)</span>-статистика.</p></li>
 </ul>
+</section>
+<section id="статистика-вывода-в-селекции" class="slide level2">
+<h2>Статистика вывода в селекции</h2>
+<div>
+<ul>
+<li class="fragment"><p>Оценка результатов селекционной работы:<br>
+Статистика вывода помогает оценить, насколько хорошо новые линии / сорта / гибриды соответствуют поставленным селекционным целям.</p></li>
+<li class="fragment"><p>Принятие решений:<br>
+Статистический анализ данных помогает селекционерам принимать обоснованные решения о том, какие генетические материалы следует продолжать использовать в дальнейшей работе, а какие следует исключить.</p></li>
+<li class="fragment"><p>Сравнение кандидатов:<br>
+Статистически обоснованно сравнивать разные линии / сорта / гибриды между собой, что помогает определить наиболее перспективные для дальнейшего использования.</p></li>
+</ul>
+</div>
 </section>
 <section id="что-такое-генеральная-совокупность" class="slide level2">
 <h2>Что такое генеральная совокупность?</h2>
@@ -441,7 +478,7 @@ Elena U
 <li><p>Выборка — часть генеральной совокупности элементов, доступная для исследования.</p>
 <p><img data-src="images/image-1460015740.png"></p></li>
 </ul>
-<p>То есть на основании <em>выборки</em> растений, которые мы посадили для исследования, мы хотим обобщить выводы на всю <em>генеральную совокупность</em> растений выбранного сорта и условий среды.</p>
+<p>То есть на основании <em>выборки</em> растений, которые мы посадили для исследования, мы хотим обобщить выводы на всю <em>генеральную совокупность</em> растений выбранного сорта.</p>
 </section>
 <section id="параметры-и-статистики" class="slide level2">
 <h2>Параметры и статистики</h2>
@@ -464,15 +501,15 @@ Elena U
 </tbody>
 </table>
 <p>Например, у стандартного нормального распределения среднее <span class="math inline">\(\mu\)</span> 0 и стандартное отклонение <span class="math inline">\(\sigma\)</span> 1, и эти значения являются <em>параметрами</em>, поскольку описывают теоретическое распределение (генеральную совокупность).</p>
-<p>Например, в датасете <code>mtcars</code> среднее по <code>mpg</code> равно 20.09, а стандартное отклонение 6.02, и эти значения являются <em>статистиками</em>.</p>
+<p>Например, в датасете <code>df</code> среднее по <code>YEILD</code> равно 81.1, а стандартное отклонение 9.52, и эти значения являются <em>статистиками</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>YIELD) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 20.09062</code></pre>
+<pre><code>[1] 81.13922</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sd</span>(mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">sd</span>(df<span class="sc">$</span>YIELD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.026948</code></pre>
+<pre><code>[1] 9.528057</code></pre>
 </div>
 </div>
 </section>
@@ -481,7 +518,7 @@ Elena U
 <ul>
 <li><p>По принципу отбора:</p>
 <ul>
-<li><p>Независимые (растения разного сорта);</p></li>
+<li><p>Независимые (растения разных сортов / гибридов);</p></li>
 <li><p>Зависимые (например одни и те же растения на разных стадиях развития).</p></li>
 </ul></li>
 <li><p>По корректности отбора:</p>
@@ -502,14 +539,13 @@ Elena U
 <ul>
 <li class="fragment"><p>Количественные</p>
 <ul>
-<li class="fragment"><p>Непрерывные (рост, вес, длина корня)</p></li>
-<li class="fragment"><p>Дискретные (количество детей в семье)</p></li>
-<li class="fragment"><p>Интервальные (температура в градусах Цельсия)</p></li>
-<li class="fragment"><p>Ранговые (места в соревнованиях, тяжесть болезни)</p></li>
+<li class="fragment"><p>Непрерывные (высота растений, масса, длина корня)</p></li>
+<li class="fragment"><p>Дискретные (количество зерен в колосе, количество соцветий)</p></li>
+<li class="fragment"><p>Ранговые (степень поражения болезнью, сладость томатов по шкале brix)</p></li>
 </ul></li>
 <li class="fragment"><p>Качественные (категориальные, номинативные)</p>
 <ul>
-<li class="fragment">Бинарные (есть мутация или нет)</li>
+<li class="fragment">Бинарные (есть мутация или нет, наличие устойчивости к болезни)</li>
 </ul></li>
 </ul>
 </div>
@@ -524,9 +560,9 @@ Elena U
 <p>Важно для проведения статистических тестов, записи формулы линейной модели.</p>
 <p>Например:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(YIELD <span class="sc">~</span> DENSITY, <span class="at">data =</span> WT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(YIELD <span class="sc">~</span> Pedigree, <span class="at">data =</span> df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><code>YEILD</code> – зависимая переменная, <code>DENSITY</code> – независимая.</p>
+<p><code>YEILD</code> – зависимая переменная, <code>Pedigree</code> – независимая.</p>
 </section>
 <section id="как-можно-описать-значения-в-выборке" class="slide level2">
 <h2>Как можно описать значения в выборке?</h2>
@@ -544,13 +580,13 @@ Elena U
 <li><p>Мода - наиболее часто встречающееся значение в выборке. Обычно актуально для категориальных переменных.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">mean</span>(iris<span class="sc">$</span>Sepal.Length) <span class="co"># среднее</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>YIELD) <span class="co"># среднее</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.843333</code></pre>
+<pre><code>[1] 81.13922</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">median</span>(iris<span class="sc">$</span>Sepal.Length) <span class="co"># медиана</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">median</span>(df<span class="sc">$</span>YIELD) <span class="co"># медиана</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.8</code></pre>
+<pre><code>[1] 79.41</code></pre>
 </div>
 </div>
 <p>Для вычисления моды можно использовать функцию <code>dplyr::count()</code>.</p>
@@ -601,13 +637,13 @@ sd =\sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{N-1}}
 <section id="расчет-дисперсии-и-стандартного-отклонения-в-r" class="slide level2">
 <h2>Расчет дисперсии и стандартного отклонения в R</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">var</span>(iris<span class="sc">$</span>Sepal.Length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">var</span>(df<span class="sc">$</span>YIELD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6856935</code></pre>
+<pre><code>[1] 90.78386</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">sd</span>(iris<span class="sc">$</span>Sepal.Length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">sd</span>(df<span class="sc">$</span>YIELD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.8280661</code></pre>
+<pre><code>[1] 9.528057</code></pre>
 </div>
 </div>
 <p>По умолчанию функции <code>var()</code> и <code>sd()</code> считают для выборки - в знаменателе N-1.</p>
@@ -621,13 +657,13 @@ sd =\sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{N-1}}
 <h2>Нормальное распределение</h2>
 <p>Непрерывное распределение вероятностей с пиком в центре и симметричными боковыми сторонами, которое в одномерном случае задаётся функцией плотности вероятности, совпадающей с функцией Гаусса.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>norm_distr <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">hist</span>(norm_distr, <span class="at">freq =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">lines</span>(<span class="fu">density</span>(norm_distr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a>norm_distr <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">hist</span>(norm_distr, <span class="at">freq =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">lines</span>(<span class="fu">density</span>(norm_distr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-5-1.png" width="3000" class="r-stretch"></section>
+<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-6-1.png" width="3000" class="r-stretch"></section>
 <section id="нормальное-распределение-1" class="slide level2">
 <h2>Нормальное распределение</h2>
 
@@ -640,19 +676,19 @@ sd =\sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{N-1}}
 <h2>Центральная предельная теорема</h2>
 <p>Используем лог-нормальное распределение:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">hist</span>(<span class="fu">rlnorm</span>(<span class="dv">10000</span>), <span class="at">breaks =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">hist</span>(<span class="fu">rlnorm</span>(<span class="dv">10000</span>), <span class="at">breaks =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-6-1.png" width="3000" class="r-stretch"></section>
+<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-7-1.png" width="3000" class="r-stretch"></section>
 <section class="slide level2">
 
 <p>Как будут распределены средние из лог-нормального распределения?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>many_means <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rlnorm</span>(<span class="dv">10000</span>)))</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">hist</span>(many_means, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>many_means <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rlnorm</span>(<span class="dv">10000</span>)))</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">hist</span>(many_means, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-7-1.png" width="3000" class="r-stretch"><p>Они будут распределены нормально!</p>
+<img data-src="lecture3_files/figure-revealjs/unnamed-chunk-8-1.png" width="3000" class="r-stretch"><p>Они будут распределены нормально!</p>
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
