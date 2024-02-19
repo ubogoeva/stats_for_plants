@@ -1,0 +1,491 @@
+---
+title: "R и статистика в селекции: лекция 4"
+subtitle: 'Визуализация в R, введение в `ggplot2`'
+author: "Elena U"
+#date: "Created on 07 March, 2023"
+execute:
+  echo: true
+  output: true
+format: 
+  revealjs:
+    slide-number: c/t
+    show-slide-number: all
+    # mainfont: Arial
+    # fontsize: 14px
+    theme: [default, custom.scss]
+    chalkboard: 
+      buttons: true
+    # theme: [serif]
+    # mouse-wheel: true
+    auto-play-media: true
+    width: 1280
+    height: 720
+    fig-dpi: 300
+    # logo: figures/icg.png
+revealjs-plugins:
+  - pointer
+editor: visual
+draft: true
+---
+
+## Данные для работы
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(dpi = 300)
+```
+
+```{r}
+library(tidyverse)
+library(readxl)
+df <- read_xlsx('sa.xlsx') %>% 
+  janitor::clean_names() # для синтаксически правильных названий колонок
+df$cl <- as.factor(df$cl)
+df$pcl <- as.factor(df$pcl)
+df$sp <- as.factor(df$sp)
+```
+
+## План лекции
+
+-   Виды графиков.
+
+-   Немного про способы визуализации в base R.
+
+-   Введение в `ggplot2`, из чего состоит грамматика графики: aes, geoms, scales, theme.
+
+-   Основные геомы.
+
+-   Пример построения графика с помощью `ggplot2`
+
+## Какие можно вспомнить виды графиков?
+
+::: incremental
+-   Диаграмма рассеяния (scatterplot)
+
+-   Гистограмма (histogram)
+
+-   Барплот (barplot)
+
+    ::: {.callout-note appearance="simple"}
+    Чем барплот отличается от гистограммы?
+    :::
+
+-   ::: {.callout-tip appearance="simple"}
+    Гистограммы для непрерывных величин, а барплоты для категориальных.
+    :::
+
+-   Боксплот (boxplot)
+
+-   Скрипичная диаграмма (violin plot)
+
+-   Pie chart
+
+-   Диаграмма Венна
+
+-   Heatmap, density plot, upset, flowchart и много чего еще...
+:::
+
+# Графики с помощью base R
+
+## Диаграмма рассеяния с помощью функции `plot()`
+
+Функция `plot()` принимает на вход разные входные данные, начнем с колонки `height` датасета `df`.
+
+```{r}
+#| output-location: column
+plot(df$height)
+```
+
+Здесь по оси X - порядковый номер элемента, по Y - значение `height`.
+
+## Диаграмма рассеяния с помощью функции `plot()`
+
+Отрисуем зависимость высоты `height` юнитов от массы `mass`. Как думаете, какую мы ожидаем зависимость?
+
+```{r}
+#| output-location: column-fragment
+plot(df$height, df$mass)
+```
+
+Точка соответствует каждому растению и его параметрам.
+
+. . .
+
+Мы наблюдаем положительную зависимость между высотой и массой.
+
+## Гистограммы (histogram)
+
+Отрисуем гистограмму по колонке `height` датасета `df`.
+
+```{r}
+#| output-location: column
+hist(df$height)
+```
+
+Что значат столбики гистограммы?
+
+## Гистограммы (histogram)
+
+Можно подкрасить столбики.
+
+```{r}
+#| code-line-numbers: '2'
+#| output-location: column
+hist(df$height, 
+col="coral", border="blue")
+```
+
+## Боксплоты
+
+```{r}
+#| output-location: column
+boxplot(df$height)
+```
+
+## Боксплоты по категориям
+
+```{r}
+#| output-location: column
+boxplot(height ~ variety, df)
+```
+
+# `ggplot2` - лучший пакет для визуализации в R
+
+## ggplot2 - grammar of graphics plot
+
+Подход к построению графиков в `ggplot2` принципиально отличается от обычных пакетов визуализации (`matplotlib`, `seaborn` в питоне).
+
+::: columns
+::: {.column width="50%"}
+Фишка `ggplot2` состоит в применении языка грамматики графики - набора правил для построения графиков.
+
+Такой подход дает огромную гибкость и возможность создания и кастомизации практически любого графика. Пакет опирается на книгу The Grammar of Graphics (Leland Wilkinson).
+:::
+
+::: {.column width="50%"}
+![](https://m.media-amazon.com/images/I/61L6t6eXkGL._AC_UF1000,1000_QL80_.jpg)
+:::
+:::
+
+------------------------------------------------------------------------
+
+![](images/ggplot_cake.png)
+
+## Слои в `ggplot2`
+
+::: columns
+::: {.column width="30%"}
+Компоненты графика:
+
+-   данные (data)
+
+-   аэстетики (aes)
+
+-   геомы (geom)
+
+-   шкалы (scales)
+
+-   разбивка facets
+
+-   оформление (theme)
+:::
+
+::: {.column width="70%"}
+![](https://pozdniakov.github.io/tidy_stats/images/ggplot2_scheme.png){width="588"}
+:::
+:::
+
+## Начнем с создания основы графика
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '1-2'
+#| fig-height: 9
+#| fig-width: 12
+ggplot(df)
+```
+
+Часто пишут с помощью пайпов: `df %>% ggplot()`, однако сейчас не будем усложнять.
+
+## Добавим `aes()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '2'
+#| fig-height: 9
+#| fig-width: 12
+ggplot(df, aes(x = height, y = mass))
+```
+
+`aes()` отражает, какие переменные и как мы собираемся использовать в графике. Здесь мы прописали, что по X будет `height`, по Y `mass`.
+
+## Добавим `geom_`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 12
+#| fig-width: 15
+ggplot(df, aes(x = height, y = mass))+
+  geom_point(size = 4)
+```
+
+`geom_point()` - отрисовывает переменные, поданные в аэстетики (`aes`), в виде точек. Получилась обычная диаграмма рассеяния!
+
+## Добавим регрессионную линию с помощью `geom_smooth()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 12
+#| fig-width: 15
+ggplot(df, aes(x = height, y = mass))+
+  geom_point(size = 4)+
+  geom_smooth()
+```
+
+По умолчанию линия не прямая, пытается максимально приблизить точки.
+
+## Добавим регрессионную прямую с помощью `geom_smooth(method = 'lm')`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 12
+#| fig-width: 15
+ggplot(df, aes(x = height, y = mass))+
+  geom_point(size = 4)+
+  geom_smooth(method = 'lm')
+```
+
+В этом случае строится классическая регрессия.
+
+## Добавим `variety` растений с помощью цвета `color` в `aes()` {style="font-size: 90%"}
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '1'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass, color = variety))+
+  geom_point(size = 4)+
+  geom_smooth(method = 'lm')
+```
+
+Можно усложнять график, например добавить форму (`shape`) для точек и отразить другие качественные переменные.
+
+## Добавим `cl` с помощью формы `shape` в `aes()` {style="font-size: 85%"}
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '2'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass, color = variety, 
+               shape = cl))+
+  geom_point(size = 4)+
+  geom_smooth(method = 'lm')
+```
+
+Ой. Похоже, что `geom_smooth()` зафитил регрессию по разным расам и типам урона, а мы хотели просто изменить форму точек. В таком случае нужно задать в конкретном геоме нужную аэстетику `aes()`.
+
+## Добавим `cl` с помощью формы `shape` в `aes()` `geom_point()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '1,2'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass, color = variety))+
+  geom_point(aes(shape = cl), size = 5)+
+  geom_smooth(method = 'lm')
+```
+
+## Барплот - `geom_bar()`
+
+Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем уже изученный подход `group_by()` + `summarise()`.
+
+```{r}
+df_height <- df %>% 
+  group_by(variety) %>% 
+  summarise(mean = mean(height, na.rm = TRUE), 
+            sd = sd(height, na.rm = TRUE))
+df_height
+```
+
+## Барплот - `geom_bar()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '2,3'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 300
+df_height %>% 
+  ggplot(aes(x = variety, y = mean))+
+  geom_bar(stat = 'identity')
+```
+
+Тоже самое, что и
+
+```{r}
+#| eval: false
+ggplot(df_height, aes(x = variety, y = mean))+
+  geom_bar(stat = 'identity')
+```
+
+## Барплот - `geom_bar()` с пределами погрешностей
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '4'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 300
+df_height %>% 
+  ggplot(aes(x = variety, y = mean))+
+  geom_bar(stat = 'identity')+
+  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.2)
+```
+
+Стандартные отклонения получились относительно небольшими.
+
+## Боксплот - `geom_boxplot()`
+
+```{r}
+df %>% 
+  ggplot(aes(variety, height))+
+  geom_boxplot()
+```
+
+Что отражает боксплот?
+
+## Боксплот
+
+![](https://i.ytimg.com/vi/BE8CVGJuftI/maxresdefault.jpg)
+
+## Violin plot (скрипичная диаграмма) - `geom_violin()`
+
+```{r}
+df %>% 
+  ggplot(aes(variety, height))+
+  geom_violin()
+```
+
+Скрипичные диаграммы содержат больше информации чем боксплоты, однако в среднем сложнее для интерпретации.
+
+## Работа со шкалами
+
+Это различные `scale_x_continuous()`, `scale_y_continuous()`, `scale_color_manual()`, выбор зависит от типа шкалы на графике.
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '6-8'
+#| fig-height: 12
+#| fig-width: 15
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass, color = variety))+
+  geom_point(size = 5)+
+  scale_y_continuous(limits = c(0,40), 
+                     breaks = seq(0, 40, 5),
+                     name = 'Масса')
+```
+
+## Работа с фасетами
+
+Есть функции `facet_grid()` и `facet_wrap()`, рекомендую последнюю.
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '4'
+pl <- df %>%
+  ggplot(aes(height, mass, fill = variety))+
+  geom_boxplot()+
+  facet_wrap(~cl)
+pl
+```
+
+## `facet_wrap()`
+
+Используем параметр `scales = free`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '4,5'
+# pl <- wc3_units %>% 
+  # ggplot(aes(race, hp, fill = race))+
+  # geom_boxplot()+
+  # facet_wrap(~armor_type, 
+             # scales = 'free')+
+  # ggtitle('Здоровье юнитов')
+# pl
+```
+
+## Изменение темы
+
+Можно использовать встроенные темы, например `theme_bw()`, `theme_classic()`.
+
+```{r}
+#| output-location: column
+
+pl +
+  theme_bw()
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: column
+pl+
+  theme_classic()
+```
+
+## Изменение визуального отображения графика
+
+Самостоятельно настраивать элементы графика нужно в функции `theme()`
+
+Например:
+
+-   Увеличим шрифт подписей оси
+
+-   Изменим цвет
+
+-   Поставим заголовок на центр
+
+```{r}
+#| output-location: column
+pl +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        plot.title = element_text(hjust = 0.5, color = 'blue'))
+  
+```
+
+## Диаграммы Венна
+
+```{r}
+#| eval: false
+# library(VennDiagram)
+```
+
+![](https://www.datanovia.com/en/wp-content/uploads/2020/11/venn-diagram-in-r-or-rstudio-ggvenn-1.png){width="412"}
+
+## UpSet
+
+Диаграммы для визуализации пересечения множеств, позволяют отображать больше информации чем диаграммы Венна
+
+```{r}
+library(UpSetR)
+
+```
+
+![](https://upset.app/assets/images//upsetr.png)
+
+## Материалы для дальнейшего изучения
+
+-   Понятная [презентация](https://pkg.garrickadenbuie.com/gentle-ggplot2/) по `ggplot2`
+
+-   Обзор [расширений](https://t.me/stats_for_science/52) ggplot2
