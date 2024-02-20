@@ -25,10 +25,11 @@ format:
 revealjs-plugins:
   - pointer
 editor: visual
-draft: true
+css: styles.css
+filters: [bg_style.lua]
 ---
 
-## Данные для работы
+## Данные для работы {style="font-size: 85%"}
 
 ```{r}
 #| include: false
@@ -37,13 +38,20 @@ knitr::opts_chunk$set(dpi = 300)
 
 ```{r}
 library(tidyverse)
+# library(ggplot)
 library(readxl)
 df <- read_xlsx('sa.xlsx') %>% 
   janitor::clean_names() # для синтаксически правильных названий колонок
-df$cl <- as.factor(df$cl)
-df$pcl <- as.factor(df$pcl)
-df$sp <- as.factor(df$sp)
+str(df)
 ```
+
+`variety` -- сорт, `height` -- высота растений, `mass` -- масса, `cl` -- длина центрального соцветия, `pcl` -- число стручков на соцветии, `sp` -- количество семян в стручке.
+
+Какого типа переменные в данных?
+
+. . .
+
+`variety` -- качественная переменная, `height`, `mass` -- количественные непрерывные, `cl`, `pcl`, `sp` -- количественные дискретные
 
 ## План лекции
 
@@ -135,6 +143,8 @@ hist(df$height,
 col="coral", border="blue")
 ```
 
+Цвета можно задавать в виде названий или RGB-кодов.
+
 ## Боксплоты
 
 ```{r}
@@ -214,16 +224,19 @@ ggplot(df)
 #| code-line-numbers: '2'
 #| fig-height: 9
 #| fig-width: 12
-ggplot(df, aes(x = height, y = mass))
+ggplot(df, 
+       aes(x = height, y = mass))
 ```
 
 `aes()` отражает, какие переменные и как мы собираемся использовать в графике. Здесь мы прописали, что по X будет `height`, по Y `mass`.
+
+Теперь нужно задать, в виде какого *геома* переменные будут отражены на графике.
 
 ## Добавим `geom_`
 
 ```{r}
 #| output-location: column
-#| code-line-numbers: '3'
+#| code-line-numbers: '2'
 #| fig-height: 12
 #| fig-width: 15
 ggplot(df, aes(x = height, y = mass))+
@@ -273,40 +286,49 @@ ggplot(df, aes(x = height, y = mass, color = variety))+
   geom_smooth(method = 'lm')
 ```
 
-Можно усложнять график, например добавить форму (`shape`) для точек и отразить другие качественные переменные.
+Можно усложнять график, например добавить форму (`shape`) для точек и отразить другие качественные переменные. Однако в нашем случае другие переменные у нас количественные.
 
-## Добавим `cl` с помощью формы `shape` в `aes()` {style="font-size: 85%"}
+Как же можно отразить несколько (\>2) количественных переменных на одном графике?
+
+## Как делать не надо
+
+3D-график является плохой практикой и не рекомендуется к использованию.
+
+![](https://pythonru.com/wp-content/uploads/2020/07/stolbchatye-diagrammy-v-3d.png)
+
+## Использование других параметров точек в качестве дополнительной оси
+
+Мы можем использовать цвет, размер точек для отражения дополнительных переменных.
 
 ```{r}
 #| output-location: column
 #| code-line-numbers: '2'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 6
+#| fig-width: 8
 #| fig-dpi: 600
-ggplot(df, aes(x = height, y = mass, color = variety, 
-               shape = cl))+
-  geom_point(size = 4)+
-  geom_smooth(method = 'lm')
+ggplot(df, aes(x = height, y = mass, color = variety))+
+  geom_point(aes(size = cl))
 ```
 
-Ой. Похоже, что `geom_smooth()` зафитил регрессию по разным расам и типам урона, а мы хотели просто изменить форму точек. В таком случае нужно задать в конкретном геоме нужную аэстетику `aes()`.
-
-## Добавим `cl` с помощью формы `shape` в `aes()` `geom_point()`
+## Используем цвет в виде количественной оси {style="font-size: 85%"}
 
 ```{r}
 #| output-location: column
-#| code-line-numbers: '1,2'
-#| fig-height: 12
-#| fig-width: 15
+#| code-line-numbers: '2'
+#| fig-height: 6
+#| fig-width: 8
 #| fig-dpi: 600
-ggplot(df, aes(x = height, y = mass, color = variety))+
-  geom_point(aes(shape = cl), size = 5)+
-  geom_smooth(method = 'lm')
+ggplot(df, aes(x = height, y = mass, shape = variety))+
+  geom_point(aes(size = cl, color = sp))
 ```
+
+Возможно получилось не очень информативно, лучше разделить по видам на фасетки (чуть дальше).
+
+`aes()`, которые в функции ggplot будут применены для всех дальнейших геомов. `aes()` в конкретном геоме будут применены только для этого геома.
 
 ## Барплот - `geom_bar()`
 
-Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем уже изученный подход `group_by()` + `summarise()`.
+Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем `tidyverse`-подход `group_by()` + `summarise()`.
 
 ```{r}
 df_height <- df %>% 
@@ -351,7 +373,7 @@ df_height %>%
   geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.2)
 ```
 
-Стандартные отклонения получились относительно небольшими.
+Средние примерно равны, стандартные отклонения получились относительно небольшими.
 
 ## Боксплот - `geom_boxplot()`
 
@@ -402,26 +424,10 @@ ggplot(df, aes(x = height, y = mass, color = variety))+
 #| output-location: column
 #| code-line-numbers: '4'
 pl <- df %>%
-  ggplot(aes(height, mass, fill = variety))+
-  geom_boxplot()+
-  facet_wrap(~cl)
+  ggplot(aes(height, mass, color = cl))+
+  geom_point()+
+  facet_wrap(~variety)
 pl
-```
-
-## `facet_wrap()`
-
-Используем параметр `scales = free`
-
-```{r}
-#| output-location: column
-#| code-line-numbers: '4,5'
-# pl <- wc3_units %>% 
-  # ggplot(aes(race, hp, fill = race))+
-  # geom_boxplot()+
-  # facet_wrap(~armor_type, 
-             # scales = 'free')+
-  # ggtitle('Здоровье юнитов')
-# pl
 ```
 
 ## Изменение темы
@@ -464,25 +470,11 @@ pl +
   
 ```
 
-## Диаграммы Венна
+## Сохранение графика
 
 ```{r}
-#| eval: false
-# library(VennDiagram)
+ggsave('plots/plot.png', pl, dpi = 300)
 ```
-
-![](https://www.datanovia.com/en/wp-content/uploads/2020/11/venn-diagram-in-r-or-rstudio-ggvenn-1.png){width="412"}
-
-## UpSet
-
-Диаграммы для визуализации пересечения множеств, позволяют отображать больше информации чем диаграммы Венна
-
-```{r}
-library(UpSetR)
-
-```
-
-![](https://upset.app/assets/images//upsetr.png)
 
 ## Материалы для дальнейшего изучения
 
