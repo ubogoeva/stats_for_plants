@@ -96,6 +96,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="styles.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -405,16 +406,29 @@ Elena U
 </div>
 
 </section>
-<section id="данные-для-работы" class="slide level2">
+<section id="данные-для-работы" class="slide level2" style="font-size: 85%">
 <h2>Данные для работы</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>df <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">'sa.xlsx'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="co"># для синтаксически правильных названий колонок</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>df<span class="sc">$</span>cl <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(df<span class="sc">$</span>cl)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>df<span class="sc">$</span>pcl <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(df<span class="sc">$</span>pcl)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>df<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(df<span class="sc">$</span>sp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># library(ggplot)</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>df <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">'sa.xlsx'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="co"># для синтаксически правильных названий колонок</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">str</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [66 × 6] (S3: tbl_df/tbl/data.frame)
+ $ variety: chr [1:66] "Лорис" "Лорис" "Лорис" "Лорис" ...
+ $ height : num [1:66] 175 193 188 176 182 161 165 173 180 180 ...
+ $ cl     : num [1:66] 49 58 43 43 38 40 43 38 42 43 ...
+ $ pcl    : num [1:66] 79 98 81 59 87 73 79 73 79 72 ...
+ $ sp     : num [1:66] 19.2 20.5 30.5 19.2 21.7 24.7 28.5 27.5 23 16 ...
+ $ mass   : num [1:66] 30.4 26.6 32.6 10.6 14.8 16.4 14.4 19.5 41.2 16.4 ...</code></pre>
+</div>
+</div>
+<p><code>variety</code> – сорт, <code>height</code> – высота растений, <code>mass</code> – масса, <code>cl</code> – длина центрального соцветия, <code>pcl</code> – число стручков на соцветии, <code>sp</code> – количество семян в стручке.</p>
+<p>Какого типа переменные в данных?</p>
+<div class="fragment">
+<p><code>variety</code> – качественная переменная, <code>height</code>, <code>mass</code> – количественные непрерывные, <code>cl</code>, <code>pcl</code>, <code>sp</code> – количественные дискретные</p>
 </div>
 </section>
 <section id="план-лекции" class="slide level2">
@@ -463,7 +477,7 @@ Elena U
 </div>
 </section>
 <section>
-<section id="графики-с-помощью-base-r" class="title-slide slide level1 center">
+<section id="графики-с-помощью-base-r" class="title-slide slide level1 inverse center" data-background-color="#93edea">
 <h1>Графики с помощью base R</h1>
 
 </section>
@@ -472,7 +486,7 @@ Elena U
 <p>Функция <code>plot()</code> принимает на вход разные входные данные, начнем с колонки <code>height</code> датасета <code>df</code>.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-3-1.png" width="3000"></p>
@@ -486,7 +500,7 @@ Elena U
 <p>Отрисуем зависимость высоты <code>height</code> юнитов от массы <code>mass</code>. Как думаете, какую мы ожидаем зависимость?</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>height, df<span class="sc">$</span>mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>height, df<span class="sc">$</span>mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-4-1.png" width="3000"></p>
@@ -503,7 +517,7 @@ Elena U
 <p>Отрисуем гистограмму по колонке <code>height</code> датасета <code>df</code>.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">hist</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">hist</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-5-1.png" width="3000"></p>
@@ -517,20 +531,21 @@ Elena U
 <p>Можно подкрасить столбики.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">hist</span>(df<span class="sc">$</span>height, </span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="at">col=</span><span class="st">"coral"</span>, <span class="at">border=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">hist</span>(df<span class="sc">$</span>height, </span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="at">col=</span><span class="st">"coral"</span>, <span class="at">border=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-6-1.png" width="3000"></p>
 </div>
 </div>
 </div>
+<p>Цвета можно задавать в виде названий или RGB-кодов.</p>
 </section>
 <section id="боксплоты" class="slide level2">
 <h2>Боксплоты</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">boxplot</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">boxplot</span>(df<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-7-1.png" width="3000"></p>
@@ -542,7 +557,7 @@ Elena U
 <h2>Боксплоты по категориям</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">boxplot</span>(height <span class="sc">~</span> variety, df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">boxplot</span>(height <span class="sc">~</span> variety, df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-8-1.png" width="3000"></p>
@@ -551,7 +566,7 @@ Elena U
 </div>
 </section></section>
 <section>
-<section id="ggplot2---лучший-пакет-для-визуализации-в-r" class="title-slide slide level1 center">
+<section id="ggplot2---лучший-пакет-для-визуализации-в-r" class="title-slide slide level1 inverse center" data-background-color="#93edea">
 <h1><code>ggplot2</code> - лучший пакет для визуализации в R</h1>
 
 </section>
@@ -593,7 +608,7 @@ Elena U
 <h2>Начнем с создания основы графика</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-9-1.png" width="3600"></p>
@@ -606,7 +621,8 @@ Elena U
 <h2>Добавим <code>aes()</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">ggplot</span>(df, </span>
+<span id="cb10-2"><a href="#cb10-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-10-1.png" width="3600"></p>
@@ -614,13 +630,14 @@ Elena U
 </div>
 </div>
 <p><code>aes()</code> отражает, какие переменные и как мы собираемся использовать в графике. Здесь мы прописали, что по X будет <code>height</code>, по Y <code>mass</code>.</p>
+<p>Теперь нужно задать, в виде какого <em>геома</em> переменные будут отражены на графике.</p>
 </section>
 <section id="добавим-geom_" class="slide level2">
 <h2>Добавим <code>geom_</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-11-1.png" width="4500"></p>
@@ -633,9 +650,9 @@ Elena U
 <h2>Добавим регрессионную линию с помощью <code>geom_smooth()</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-12-1.png" width="4500"></p>
@@ -648,9 +665,9 @@ Elena U
 <h2>Добавим регрессионную прямую с помощью <code>geom_smooth(method = 'lm')</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass))<span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-13-1.png" width="4500"></p>
@@ -663,56 +680,61 @@ Elena U
 <h2>Добавим <code>variety</code> растений с помощью цвета <code>color</code> в <code>aes()</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb13" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-14-1.png" width="9000"></p>
 </div>
 </div>
 </div>
-<p>Можно усложнять график, например добавить форму (<code>shape</code>) для точек и отразить другие качественные переменные.</p>
+<p>Можно усложнять график, например добавить форму (<code>shape</code>) для точек и отразить другие качественные переменные. Однако в нашем случае другие переменные у нас количественные.</p>
+<p>Как же можно отразить несколько (&gt;2) количественных переменных на одном графике?</p>
 </section>
-<section id="добавим-cl-с-помощью-формы-shape-в-aes" class="slide level2" style="font-size: 85%">
-<h2>Добавим <code>cl</code> с помощью формы <code>shape</code> в <code>aes()</code></h2>
+<section id="как-делать-не-надо" class="slide level2">
+<h2>Как делать не надо</h2>
+<p>3D-график является плохой практикой и не рекомендуется к использованию.</p>
+
+<img data-src="https://pythonru.com/wp-content/uploads/2020/07/stolbchatye-diagrammy-v-3d.png" class="r-stretch"></section>
+<section id="использование-других-параметров-точек-в-качестве-дополнительной-оси" class="slide level2">
+<h2>Использование других параметров точек в качестве дополнительной оси</h2>
+<p>Мы можем использовать цвет, размер точек для отражения дополнительных переменных.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb14" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety, </span>
-<span id="cb14-2"><a href="#cb14-2"></a>               <span class="at">shape =</span> cl))<span class="sc">+</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> cl))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-15-1.png" width="9000"></p>
+<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-15-1.png" width="4800"></p>
 </div>
 </div>
 </div>
-<p>Ой. Похоже, что <code>geom_smooth()</code> зафитил регрессию по разным расам и типам урона, а мы хотели просто изменить форму точек. В таком случае нужно задать в конкретном геоме нужную аэстетику <code>aes()</code>.</p>
 </section>
-<section id="добавим-cl-с-помощью-формы-shape-в-aes-geom_point" class="slide level2">
-<h2>Добавим <code>cl</code> с помощью формы <code>shape</code> в <code>aes()</code> <code>geom_point()</code></h2>
+<section id="используем-цвет-в-виде-количественной-оси" class="slide level2" style="font-size: 85%">
+<h2>Используем цвет в виде количественной оси</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="1,2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> cl), <span class="at">size =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">shape =</span> variety))<span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> cl, <span class="at">color =</span> sp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-16-1.png" width="9000"></p>
+<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-16-1.png" width="4800"></p>
 </div>
 </div>
 </div>
+<p>Возможно получилось не очень информативно, лучше разделить по видам на фасетки (чуть дальше).</p>
+<p><code>aes()</code>, которые в функции ggplot будут применены для всех дальнейших геомов. <code>aes()</code> в конкретном геоме будут применены только для этого геома.</p>
 </section>
 <section id="барплот---geom_bar" class="slide level2">
 <h2>Барплот - <code>geom_bar()</code></h2>
-<p>Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем уже изученный подход <code>group_by()</code> + <code>summarise()</code>.</p>
+<p>Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем <code>tidyverse</code>-подход <code>group_by()</code> + <code>summarise()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>df_height <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">group_by</span>(variety) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb16-4"><a href="#cb16-4"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb16-5"><a href="#cb16-5"></a>df_height</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>df_height <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">group_by</span>(variety) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb17-4"><a href="#cb17-4"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-5"><a href="#cb17-5"></a>df_height</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   variety  mean    sd
@@ -727,9 +749,9 @@ Elena U
 <h2>Барплот - <code>geom_bar()</code></h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb18" data-code-line-numbers="2,3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>df_height <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19" data-code-line-numbers="2,3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>df_height <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-18-1.png" width="4500"></p>
@@ -738,32 +760,32 @@ Elena U
 </div>
 <p>Тоже самое, что и</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">ggplot</span>(df_height, <span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">ggplot</span>(df_height, <span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="барплот---geom_bar-с-пределами-погрешностей" class="slide level2">
 <h2>Барплот - <code>geom_bar()</code> с пределами погрешностей</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>df_height <span class="sc">%&gt;%</span> </span>
-<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)<span class="sc">+</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean <span class="sc">-</span> sd, <span class="at">ymax =</span> mean <span class="sc">+</span> sd), <span class="at">width =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>df_height <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> variety, <span class="at">y =</span> mean))<span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)<span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean <span class="sc">-</span> sd, <span class="at">ymax =</span> mean <span class="sc">+</span> sd), <span class="at">width =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-20-1.png" width="4500"></p>
 </div>
 </div>
 </div>
-<p>Стандартные отклонения получились относительно небольшими.</p>
+<p>Средние примерно равны, стандартные отклонения получились относительно небольшими.</p>
 </section>
 <section id="боксплот---geom_boxplot" class="slide level2">
 <h2>Боксплот - <code>geom_boxplot()</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(variety, height))<span class="sc">+</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(variety, height))<span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lecture4_files/figure-revealjs/unnamed-chunk-21-1.png" width="3000" class="r-stretch"><p>Что отражает боксплот?</p>
@@ -775,9 +797,9 @@ Elena U
 <section id="violin-plot-скрипичная-диаграмма---geom_violin" class="slide level2">
 <h2>Violin plot (скрипичная диаграмма) - <code>geom_violin()</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(variety, height))<span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">geom_violin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(variety, height))<span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">geom_violin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lecture4_files/figure-revealjs/unnamed-chunk-22-1.png" width="3000" class="r-stretch"><p>Скрипичные диаграммы содержат больше информации чем боксплоты, однако в среднем сложнее для интерпретации.</p>
@@ -787,11 +809,11 @@ Elena U
 <p>Это различные <code>scale_x_continuous()</code>, <code>scale_y_continuous()</code>, <code>scale_color_manual()</code>, выбор зависит от типа шкалы на графике.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="6-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>), </span>
-<span id="cb23-4"><a href="#cb23-4"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">5</span>),</span>
-<span id="cb23-5"><a href="#cb23-5"></a>                     <span class="at">name =</span> <span class="st">'Масса'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="6-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass, <span class="at">color =</span> variety))<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>), </span>
+<span id="cb24-4"><a href="#cb24-4"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">5</span>),</span>
+<span id="cb24-5"><a href="#cb24-5"></a>                     <span class="at">name =</span> <span class="st">'Масса'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-23-1.png" width="9000"></p>
@@ -804,32 +826,15 @@ Elena U
 <p>Есть функции <code>facet_grid()</code> и <code>facet_wrap()</code>, рекомендую последнюю.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>pl <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height, mass, <span class="at">fill =</span> variety))<span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>cl)</span>
-<span id="cb24-5"><a href="#cb24-5"></a>pl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>pl <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height, mass, <span class="at">color =</span> cl))<span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>variety)</span>
+<span id="cb25-5"><a href="#cb25-5"></a>pl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-24-1.png" width="3000"></p>
 </div>
-</div>
-</div>
-</section>
-<section id="facet_wrap" class="slide level2">
-<h2><code>facet_wrap()</code></h2>
-<p>Используем параметр <code>scales = free</code></p>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="4,5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># pl &lt;- wc3_units %&gt;% </span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="co"># ggplot(aes(race, hp, fill = race))+</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="co"># geom_boxplot()+</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>  <span class="co"># facet_wrap(~armor_type, </span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>             <span class="co"># scales = 'free')+</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a>  <span class="co"># ggtitle('Здоровье юнитов')</span></span>
-<span id="cb25-7"><a href="#cb25-7"></a><span class="co"># pl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-
 </div>
 </div>
 </section>
@@ -842,7 +847,7 @@ Elena U
 <span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-26-1.png" width="3000"></p>
+<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-25-1.png" width="3000"></p>
 </div>
 </div>
 </div>
@@ -855,7 +860,7 @@ Elena U
 <span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-27-1.png" width="3000"></p>
+<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-26-1.png" width="3000"></p>
 </div>
 </div>
 </div>
@@ -877,26 +882,17 @@ Elena U
 <span id="cb28-4"><a href="#cb28-4"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">'blue'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-28-1.png" width="3000"></p>
+<p><img data-src="lecture4_files/figure-revealjs/unnamed-chunk-27-1.png" width="3000"></p>
 </div>
 </div>
 </div>
 </section>
-<section id="диаграммы-венна" class="slide level2">
-<h2>Диаграммы Венна</h2>
+<section id="сохранение-графика" class="slide level2">
+<h2>Сохранение графика</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># library(VennDiagram)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">ggsave</span>(<span class="st">'plots/plot.png'</span>, pl, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-<img data-src="https://www.datanovia.com/en/wp-content/uploads/2020/11/venn-diagram-in-r-or-rstudio-ggvenn-1.png" width="412" class="r-stretch"></section>
-<section id="upset" class="slide level2">
-<h2>UpSet</h2>
-<p>Диаграммы для визуализации пересечения множеств, позволяют отображать больше информации чем диаграммы Венна</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">library</span>(UpSetR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-
-<img data-src="https://upset.app/assets/images//upsetr.png" class="r-stretch"></section>
+</section>
 <section id="материалы-для-дальнейшего-изучения" class="slide level2">
 <h2>Материалы для дальнейшего изучения</h2>
 <ul>
