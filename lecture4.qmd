@@ -37,10 +37,10 @@ knitr::opts_chunk$set(dpi = 300)
 ```
 
 ```{r}
-library(tidyverse)
-# library(ggplot)
+library(tidyverse) # для загрузки набора пакетов для анализа данных
+# library(ggplot2) # для загрузки ggplot2
 library(readxl)
-df <- read_xlsx('sa.xlsx') %>% 
+df <- read_xlsx('data/sa.xlsx') %>% 
   janitor::clean_names() # для синтаксически правильных названий колонок
 str(df)
 ```
@@ -51,7 +51,7 @@ str(df)
 
 . . .
 
-`variety` -- качественная переменная, `height`, `mass` -- количественные непрерывные, `cl`, `pcl`, `sp` -- количественные дискретные
+`variety` -- качественная переменная, `height`, `mass` -- количественные непрерывные, `cl`, `pcl`, `sp` -- количественные дискретные.
 
 ## План лекции
 
@@ -86,7 +86,7 @@ str(df)
 
 -   Скрипичная диаграмма (violin plot)
 
--   Pie chart
+-   ~~Pie chart~~ (не рекомендуется)
 
 -   Диаграмма Венна
 
@@ -95,27 +95,35 @@ str(df)
 
 # Графики с помощью base R
 
-## Диаграмма рассеяния с помощью функции `plot()`
+## Диаграмма рассеяния с помощью функции `plot()` {style="font-size: 80%"}
 
 Функция `plot()` принимает на вход разные входные данные, начнем с колонки `height` датасета `df`.
 
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 plot(df$height)
 ```
 
-Здесь по оси X - порядковый номер элемента, по Y - значение `height`.
+Здесь по оси X - порядковый номер элемента в исходном датафрейме, по Y - значение `height`.
 
-## Диаграмма рассеяния с помощью функции `plot()`
+::: {.callout-tip appearance="simple"}
+Синтаксис `df$height` позволяет извлечь одну колонку датафрейма в виде вектора.
+:::
+
+## Диаграмма рассеяния с помощью функции `plot()` {style="font-size: 80%"}
 
 Отрисуем зависимость высоты `height` юнитов от массы `mass`. Как думаете, какую мы ожидаем зависимость?
 
+Точка соответствует каждому растению и его параметрам.
+
 ```{r}
 #| output-location: column-fragment
+#| fig-height: 4
+#| fig-width: 5
 plot(df$height, df$mass)
 ```
-
-Точка соответствует каждому растению и его параметрам.
 
 . . .
 
@@ -127,6 +135,8 @@ plot(df$height, df$mass)
 
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 hist(df$height)
 ```
 
@@ -139,8 +149,10 @@ hist(df$height)
 ```{r}
 #| code-line-numbers: '2'
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 hist(df$height, 
-col="coral", border="blue")
+col="#fdae61", border="red3")
 ```
 
 Цвета можно задавать в виде названий или RGB-кодов.
@@ -149,19 +161,25 @@ col="coral", border="blue")
 
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 boxplot(df$height)
 ```
 
 ## Боксплоты по категориям
 
+Через синтаксис формулы (\~), где слева количественная переменная, справа качественная.
+
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 boxplot(height ~ variety, df)
 ```
 
 # `ggplot2` - лучший пакет для визуализации в R
 
-## ggplot2 - grammar of graphics plot
+## `ggplot2` - grammar of graphics plot
 
 Подход к построению графиков в `ggplot2` принципиально отличается от обычных пакетов визуализации (`matplotlib`, `seaborn` в питоне).
 
@@ -210,25 +228,25 @@ boxplot(height ~ variety, df)
 ```{r}
 #| output-location: column
 #| code-line-numbers: '1-2'
-#| fig-height: 9
-#| fig-width: 12
+#| fig-height: 4
+#| fig-width: 5
 ggplot(df)
 ```
 
 Часто пишут с помощью пайпов: `df %>% ggplot()`, однако сейчас не будем усложнять.
 
-## Добавим `aes()`
+## Добавим `aes()` {style="font-size: 90%"}
 
 ```{r}
 #| output-location: column
 #| code-line-numbers: '2'
-#| fig-height: 9
-#| fig-width: 12
+#| fig-height: 4
+#| fig-width: 5
 ggplot(df, 
        aes(x = height, y = mass))
 ```
 
-`aes()` отражает, какие переменные и как мы собираемся использовать в графике. Здесь мы прописали, что по X будет `height`, по Y `mass`.
+`aes()` отражает, какие переменные и по какой оси собираемся использовать в графике (X, Y, цвет, размер). Здесь мы прописали, что по X будет `height`, по Y `mass`.
 
 Теперь нужно задать, в виде какого *геома* переменные будут отражены на графике.
 
@@ -237,10 +255,10 @@ ggplot(df,
 ```{r}
 #| output-location: column
 #| code-line-numbers: '2'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 4
+#| fig-width: 5
 ggplot(df, aes(x = height, y = mass))+
-  geom_point(size = 4)
+  geom_point(size = 3)
 ```
 
 `geom_point()` - отрисовывает переменные, поданные в аэстетики (`aes`), в виде точек. Получилась обычная диаграмма рассеяния!
@@ -250,10 +268,10 @@ ggplot(df, aes(x = height, y = mass))+
 ```{r}
 #| output-location: column
 #| code-line-numbers: '3'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 4
+#| fig-width: 5
 ggplot(df, aes(x = height, y = mass))+
-  geom_point(size = 4)+
+  geom_point(size = 3)+
   geom_smooth()
 ```
 
@@ -264,26 +282,61 @@ ggplot(df, aes(x = height, y = mass))+
 ```{r}
 #| output-location: column
 #| code-line-numbers: '3'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 4
+#| fig-width: 5
 ggplot(df, aes(x = height, y = mass))+
-  geom_point(size = 4)+
+  geom_point(size = 3)+
   geom_smooth(method = 'lm')
 ```
 
-В этом случае строится классическая регрессия.
+В этом случае строится классическая линейная регрессия.
 
-## Добавим `variety` растений с помощью цвета `color` в `aes()` {style="font-size: 90%"}
+## Добавим `variety` растений с помощью цвета `color` в `aes()` {style="font-size: 85%"}
+
+::: {.callout-tip appearance="minimal"}
+`aes()`, которые прописаны в функции `ggplot` будут применены для всех дальнейших геомов. `aes()` в конкретном геоме будут применены только для этого геома.
+:::
 
 ```{r}
 #| output-location: column
 #| code-line-numbers: '1'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 4
+#| fig-width: 5
 #| fig-dpi: 600
 ggplot(df, aes(x = height, y = mass, color = variety))+
-  geom_point(size = 4)+
+  geom_point(size = 3)+
   geom_smooth(method = 'lm')
+```
+
+Получили регрессионную прямую для каждого сорта в отдельности.
+
+## Чтобы задать отдельно аэстетику в конкретном геоме {style="font-size: 85%"}
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '1,2'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass))+
+  geom_point(aes(color = variety), size = 3)+
+  geom_smooth(method = 'lm')
+```
+
+Соответственно, цвет в виде сорта отразился только для точек, а регрессионная линия с помощью `geom_smooth()` применена для всего графика в целом, без разбивки на сорт.
+
+## Добавить прозрачность для точек с помощью `alpha` {style="font-size: 85%"}
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass))+
+  geom_point(aes(color = variety), 
+             size = 3, alpha = 0.8)+
+  geom_smooth(method = 'lm', color = 'gray30')
 ```
 
 Можно усложнять график, например добавить форму (`shape`) для точек и отразить другие качественные переменные. Однако в нашем случае другие переменные у нас количественные.
@@ -295,6 +348,8 @@ ggplot(df, aes(x = height, y = mass, color = variety))+
 3D-график является плохой практикой и не рекомендуется к использованию.
 
 ![](https://pythonru.com/wp-content/uploads/2020/07/stolbchatye-diagrammy-v-3d.png)
+
+Как вы думаете, почему?
 
 ## Использование других параметров точек в качестве дополнительной оси
 
@@ -310,7 +365,7 @@ ggplot(df, aes(x = height, y = mass, color = variety))+
   geom_point(aes(size = cl))
 ```
 
-## Используем цвет в виде количественной оси {style="font-size: 85%"}
+## Используем цвет в виде количественной оси и форму для качественной {style="font-size: 85%"}
 
 ```{r}
 #| output-location: column
@@ -322,13 +377,11 @@ ggplot(df, aes(x = height, y = mass, shape = variety))+
   geom_point(aes(size = cl, color = sp))
 ```
 
-Возможно получилось не очень информативно, лучше разделить по видам на фасетки (чуть дальше).
-
-`aes()`, которые в функции ggplot будут применены для всех дальнейших геомов. `aes()` в конкретном геоме будут применены только для этого геома.
+Возможно получилось не очень информативно, лучше разделить по сортам (`variety`) на фасетки (чуть дальше).
 
 ## Барплот - `geom_bar()`
 
-Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные - посчитать среднее и стандартное отклонение. Используем `tidyverse`-подход `group_by()` + `summarise()`.
+Стандартная задача отрисовать средние и пределы погрешности для статьи или презентации. Для этого нам нужно преобразовать исходные данные -- посчитать среднее и стандартное отклонение. Используем `tidyverse`-подход `group_by()` + `summarise()`.
 
 ```{r}
 df_height <- df %>% 
@@ -343,8 +396,8 @@ df_height
 ```{r}
 #| output-location: column
 #| code-line-numbers: '2,3'
-#| fig-height: 12
-#| fig-width: 15
+#| fig-height: 4
+#| fig-width: 5
 #| fig-dpi: 300
 df_height %>% 
   ggplot(aes(x = variety, y = mean))+
@@ -361,16 +414,19 @@ ggplot(df_height, aes(x = variety, y = mean))+
 
 ## Барплот - `geom_bar()` с пределами погрешностей
 
+Пределы погрешности рисуются с помощью функции `geom_errorbar()`
+
 ```{r}
 #| output-location: column
-#| code-line-numbers: '4'
-#| fig-height: 12
-#| fig-width: 15
+#| code-line-numbers: '4-5'
+#| fig-height: 4
+#| fig-width: 5
 #| fig-dpi: 300
 df_height %>% 
   ggplot(aes(x = variety, y = mean))+
   geom_bar(stat = 'identity')+
-  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.2)
+  geom_errorbar(aes(ymin = mean - sd, 
+                    ymax = mean + sd), width = 0.2)
 ```
 
 Средние примерно равны, стандартные отклонения получились относительно небольшими.
@@ -378,6 +434,11 @@ df_height %>%
 ## Боксплот - `geom_boxplot()`
 
 ```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 300
 df %>% 
   ggplot(aes(variety, height))+
   geom_boxplot()
@@ -389,9 +450,35 @@ df %>%
 
 ![](https://i.ytimg.com/vi/BE8CVGJuftI/maxresdefault.jpg)
 
+## Расширения `ggplot2` для возможности отражать значимости
+
+Расширение [ggpubr](https://rpkgs.datanovia.com/ggpubr/), а с полным списком расширений можно ознакомиться [здесь](https://exts.ggplot2.tidyverse.org/gallery/).
+
+![](https://rpkgs.datanovia.com/ggpubr/tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
+
+## Боксплот с отражением конкретных наблюдений
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '4'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 300
+df %>% 
+  ggplot(aes(variety, height))+
+  geom_boxplot()+
+  geom_jitter(aes(color = variety))+
+  theme_classic()
+```
+
 ## Violin plot (скрипичная диаграмма) - `geom_violin()`
 
 ```{r}
+#| output-location: column
+#| code-line-numbers: '3'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 300
 df %>% 
   ggplot(aes(variety, height))+
   geom_violin()
@@ -399,29 +486,89 @@ df %>%
 
 Скрипичные диаграммы содержат больше информации чем боксплоты, однако в среднем сложнее для интерпретации.
 
+## Violin + boxplot
+
+```{r}
+#| output-location: column
+#| code-line-numbers: '3,4'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 300
+df %>% 
+  ggplot(aes(variety, height))+
+  geom_violin()+
+  geom_boxplot(width = 0.2)
+```
+
+## Таблица по основным геомам
+
+| Название геома     | Перевод              | Применение                      |
+|--------------------|-----------------------|------------------------------|
+| `geom_point()`     | Точечная диаграмма   | Диаграмма рассеяния             |
+| `geom_bar()`       | Барплот              | Для сравнения групп между собой |
+| `geom_histogram()` | Гистограмма          | Для количественных переменных   |
+| `geom_errorbar()`  | Пределы погрешностей | Отрисовка "усов"                |
+| `geom_boxplot()`   | Боксплот             | Для сравнения групп между собой |
+| `geom_vioin()`     | Скрипичная диаграмма | Для сравнения групп между собой |
+| `geom_smooth()`    | Регрессионная линия  | Для регрессии                   |
+
+## Таблица с основными параметрами геомов
+
+| Название | Что отражает                                    |
+|----------|-------------------------------------------------|
+| color    | цвет точек, обводка у столбцов, боксплотов и тп |
+| fill     | заливка столбцов, боксплотов                    |
+| size     | размер геома                                    |
+| shape    | форма точек                                     |
+| alpha    | прозрачность геома                              |
+
+Все эти параметры можно использовать как статично (например, `geom_point(size = 3)`), так и в качестве аэстетики, то есть другой переменной, например показать зависимость размера точек от другой переменной: `geom_point(aes(size = cl))`.
+
 ## Работа со шкалами
 
 Это различные `scale_x_continuous()`, `scale_y_continuous()`, `scale_color_manual()`, выбор зависит от типа шкалы на графике.
 
+Позволяют тонко настраивать параметры конкретной шкалы: лимиты и шаг засечек на графике, название оси, цвет в случае цветовой шкалы.
+
 ```{r}
 #| output-location: column
-#| code-line-numbers: '6-8'
-#| fig-height: 12
-#| fig-width: 15
+#| code-line-numbers: '3-5'
+#| fig-height: 4
+#| fig-width: 5
 #| fig-dpi: 600
 ggplot(df, aes(x = height, y = mass, color = variety))+
-  geom_point(size = 5)+
+  geom_point(size = 3)+
   scale_y_continuous(limits = c(0,40), 
                      breaks = seq(0, 40, 5),
                      name = 'Масса')
 ```
 
-## Работа с фасетами
+## Работа с цветовой шкалой
 
-Есть функции `facet_grid()` и `facet_wrap()`, рекомендую последнюю.
+Хорошие цветовые сочетания можно посмотреть [здесь](https://colorbrewer2.org/#type=diverging&scheme=RdYlGn&n=3)
 
 ```{r}
 #| output-location: column
+#| code-line-numbers: '6'
+#| fig-height: 4
+#| fig-width: 5
+#| fig-dpi: 600
+ggplot(df, aes(x = height, y = mass, color = variety))+
+  geom_point(size = 3)+
+  scale_y_continuous(limits = c(0,40), 
+                     breaks = seq(0, 40, 5),
+                     name = 'Масса')+
+  scale_color_manual(values = c('#f1b6da','#b8e186','#4dac26'))
+```
+
+## Работа с фасетами
+
+Есть функции `facet_grid()` и `facet_wrap()`, рекомендую последнюю для разбивки графика на "фасетки" по категориальным переменным.
+
+```{r}
+#| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 #| code-line-numbers: '4'
 pl <- df %>%
   ggplot(aes(height, mass, color = cl))+
@@ -430,13 +577,27 @@ pl <- df %>%
 pl
 ```
 
-## Изменение темы
+## Работа с фасетами и цвет и размер как оси для количественных переменных
+
+```{r}
+#| output-location: column
+#| fig-height: 4
+#| fig-width: 5
+#| code-line-numbers: '3'
+df %>%
+  ggplot(aes(height, mass, color = cl))+
+  geom_point(aes(size = pcl))+
+  facet_wrap(~variety)
+```
+
+## Изменение внешнего вида графика
 
 Можно использовать встроенные темы, например `theme_bw()`, `theme_classic()`.
 
 ```{r}
 #| output-location: column
-
+#| fig-height: 4
+#| fig-width: 5
 pl +
   theme_bw()
 ```
@@ -445,6 +606,8 @@ pl +
 
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 pl+
   theme_classic()
 ```
@@ -453,22 +616,21 @@ pl+
 
 Самостоятельно настраивать элементы графика нужно в функции `theme()`
 
-Например:
-
--   Увеличим шрифт подписей оси
-
--   Изменим цвет
-
--   Поставим заголовок на центр
+Например: увеличим шрифт подписей оси, изменим цвет, поставим заголовок на центр
 
 ```{r}
 #| output-location: column
+#| fig-height: 4
+#| fig-width: 5
 pl +
+  ggtitle('Зависимость высоты и массы для разных сортов')+
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 16),
         plot.title = element_text(hjust = 0.5, color = 'blue'))
   
 ```
+
+Все параметры для изменения темы можно посмотреть в справке: `?theme`
 
 ## Сохранение графика
 
@@ -476,8 +638,14 @@ pl +
 ggsave('plots/plot.png', pl, dpi = 300)
 ```
 
+Также можно экспортировать в pdf и задавать желаемые размеры графика.
+
 ## Материалы для дальнейшего изучения
 
--   Понятная [презентация](https://pkg.garrickadenbuie.com/gentle-ggplot2/) по `ggplot2`
+-   Понятная [презентация](https://pkg.garrickadenbuie.com/gentle-ggplot2/) мастер-класс по `ggplot2`
 
 -   Обзор [расширений](https://t.me/stats_for_science/52) ggplot2
+
+-   [Визуализация данных с помощью ggplot2](https://dmkpress.com/catalog/computer/statistics/978-5-97060-470-0/)(Мастицкий С.Э.)
+
+-   Книга [ggplot2](https://ggplot2-book.org/)

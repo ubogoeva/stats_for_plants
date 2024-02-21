@@ -32,6 +32,12 @@ title: "Список лекций"
 
 Лекция 4. Визуализация данных с помощью [`ggplot2`](https://ggplot2.tidyverse.org/)
 
+-   [Слайды](lecture4.qmd)
+
+-   [Запись](https://drive.google.com/drive/folders/11Xv6diR9C0qk9C7n0T7Hh4qTXeZa66wP)
+
+-   [Данные](https://github.com/ubogoeva/stats_for_plants/raw/master/data/sa.xlsx)
+
 Лекция 5. Что такое p-value, нормальное распределение, t-распределение, тест Стьюдента. Мощность тестов (?).
 
 Лекция 6. Простая линейная регрессия, множественная линейная регрессия.
