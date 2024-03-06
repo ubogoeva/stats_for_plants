@@ -48,6 +48,14 @@ title: "Список лекций"
 
 Лекция 6. Простая линейная регрессия, множественная линейная регрессия.
 
+-   [Слайды](lecture6.qmd)
+
+-   [Запись](https://drive.google.com/drive/folders/1Cxqzd_xHTHUGwVtLhOVY0NOytCkers5f)
+
+-   Про корреляции (с [википедии](https://en.wikipedia.org/wiki/Correlation))
+
+    ![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Correlation_examples2.svg/1200px-Correlation_examples2.svg.png)
+
 Лекция 7. Однофакторный и многофакторный дисперсионный анализ (ANOVA).
 
 Лекция 8. Тест Стьюдента, ANOVA и линейная регрессия как частные случаи общей линейной модели. Введение в обобщенную линейную модель.
