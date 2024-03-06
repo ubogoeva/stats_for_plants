@@ -409,10 +409,10 @@ Elena U
 <section id="план-лекции" class="slide level2">
 <h2>План лекции</h2>
 <ul>
-<li><p>Ковариация и корреляция</p></li>
-<li><p>Простая линейная регрессия: формула, реализация в R, интерпретация</p></li>
-<li><p>Ограничения линейной регрессии (в т.ч. нормальность распределения остатков)</p></li>
-<li><p>Множественная линейная регрессия</p></li>
+<li><p>Ковариация, коэффициент ковариации.</p></li>
+<li><p>Корреляция, тестирование значимости коэффициента корреляции, непараметрические аналоги.</p></li>
+<li><p>Простая линейная регрессия: формула, реализация в R, интерпретация.</p></li>
+<li><p>Ограничения линейной регрессии (в т.ч. нормальность распределения остатков).</p></li>
 </ul>
 </section>
 <section>
@@ -422,7 +422,7 @@ Elena U
 </section>
 <section id="данные-для-работы" class="slide level2">
 <h2>Данные для работы</h2>
-<p>Несколько сортов шпината, урожайность и дни до сбора урожая.</p>
+<p>Несколько сортов шпината, их урожайность и количество дней до сбора урожая.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="st">'data/Spin.data.csv'</span>)</span>
@@ -469,7 +469,7 @@ Elena U
                     Max.   :22   Max.   :98  </code></pre>
 </div>
 </div>
-<p>Будем исследовать, связаны ли дни и урожайность.</p>
+<p>Проверим, есть ли взаимосвязь между количеством дней до сбора урожая и урожайностью.</p>
 </section>
 <section id="посмотрим-на-данные-1" class="slide level2">
 <h2>Посмотрим на данные</h2>
@@ -602,7 +602,16 @@ Elena U
 <p><span class="math display">\[ \sigma_{xy} = cov(x, y) = \frac{\sum_{i = 1}^n(x_i - \overline{x})(y_i - \overline{y})}{n} \]</span></p>
 <p>Оценка ковариации по выборке:</p>
 <p><span class="math display">\[ \hat{\sigma}_{xy} = \frac{\sum_{i = 1}^n(x_i - \overline{x})(y_i - \overline{y})}{n-1} \]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
 <p>Если оценить ковариацию переменной с самой собой, какая будет формула?</p>
+</div>
+</div>
+</div>
 </section>
 <section id="ковариация-1" class="slide level2" style="font-size: 90%">
 <h2>Ковариация</h2>
@@ -661,15 +670,18 @@ Yield 70.25000 274.6667</code></pre>
 <li><p>Вывод: отклоняем или не отклоняем нулевую гипотезу.</p></li>
 </ol>
 </section>
-<section id="тестируем-значимость-коэффициента-корреляции" class="slide level2">
-<h2>Тестируем значимость коэффициента корреляции</h2>
-<p>Нулевая гипотеза: коэффициент корреляции равен нулю<br>
-Альтернативная: коэффициент корреляции не равен нулю.</p>
-<p>В качестве тестовой статистики используется t-статистика. Для расчета p-value используется t-распределение с <span class="math inline">\(n_1+n_2-2\)</span> степенями свободы, где n1, n2 – размер выборки 1 и 2.</p>
+<section id="тестируем-значимость-коэффициента-корреляции-r-теория" class="slide level2">
+<h2>Тестируем значимость коэффициента корреляции (r): теория</h2>
+<p><span class="math inline">\(H_0: r = 0\)</span></p>
+<p><span class="math inline">\(H_1: r \neq 0\)</span></p>
+<p>Нулевая гипотеза: коэффициент корреляции равен нулю.<br>
+Альтернативная гипотеза: коэффициент корреляции не равен нулю.</p>
+<p>В качестве тестовой статистики используется t-статистика.</p>
+<p>Для расчета p-value используется t-распределение с <span class="math inline">\(n_1+n_2-2\)</span> степенями свободы, где n1, n2 – размер выборки 1 и 2.</p>
 <p>Мы это вручную считать не будем, воспользуемся встроенной функцией <code>cor.test()</code>.</p>
 </section>
-<section id="расчет-с-помощью-функции" class="slide level2">
-<h2>Расчет с помощью функции</h2>
+<section id="расчет-с-помощью-функции-cor.test" class="slide level2">
+<h2>Расчет с помощью функции <code>cor.test()</code></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">cor.test</span>(df<span class="sc">$</span>Days, df<span class="sc">$</span>Yield)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -800,6 +812,7 @@ sample estimates:
 6           37        5.2</code></pre>
 </div>
 </div>
+<p>Данные взяты <a href="https://iastate.pressbooks.pub/quantitativeplantbreeding/chapter/linear-correlation-regression-and-prediction/">отсюда</a></p>
 </section>
 <section id="какие-бывают-регрессионные-модели" class="slide level2">
 <h2>Какие бывают регрессионные модели?</h2>
@@ -826,7 +839,7 @@ sample estimates:
 <p>Для более сложных моделей нотация немного меняется:</p>
 <p><span class="math display">\[ Y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_nx_n + \epsilon \]</span></p>
 </section>
-<section id="линейная-регрессия-1" class="slide level2">
+<section id="линейная-регрессия-1" class="slide level2" style="font-size: 90%">
 <h2>Линейная регрессия</h2>
 <p>В R функция для линейной регрессии - <code>lm()</code>. Давайте попробуем предсказать значение урожайности <code>corn_yield</code> на основании водного стресса (<code>water_stress</code>).</p>
 <div class="cell">
@@ -853,7 +866,7 @@ Coefficients:
 </section>
 <section id="график-регрессионной-прямой-на-основании-полученных-коэффициентов" class="slide level2">
 <h2>График регрессионной прямой на основании полученных коэффициентов</h2>
-<p>corn_yield = Intercept + water_stress * Slope = 9.7761 + water_stress *(-0.1167) = 9.7761 - water_stress *0.1167</p>
+<p><code>corn_yield</code> = <code>Intercept</code> + <code>water_stress</code> * Slope = 9.7761 + <code>water_stress</code> *(-0.1167) = 9.7761 - <code>water_stress</code> *0.1167</p>
 <p>Попробуем нарисовать регрессионную прямую на нашем графике.</p>
 <div class="cell columns column-output-location">
 <div class="column">
@@ -986,24 +999,25 @@ water_stress -0.1167471 0.008096258 -14.41988 9.249406e-15</code></pre>
 <p><img data-src="lecture6_files/figure-revealjs/unnamed-chunk-23-1.png" width="1800"></p>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<div class="columns">
-<p>Проверка на линейность связи:</p><ul>
+</div><div class="column" style="font-size: 85%">
+<p>Проверка на линейность связи:</p>
+<ul>
 <li><p>График зависимости y от x (и от других переменных, не включенных в модель).</p></li>
 <li><p>График остатков от предсказанных значений.</p></li>
-</ul><p>Что делать с нелинейностью данных?</p><ul>
+</ul>
+<p>Что делать с нелинейностью данных?</p>
+<ul>
 <li><p>Добавить неучтенные переменные или взаимодействия</p></li>
 <li><p>Применить линеаризующее преобразование (Осторожно!)</p></li>
 <li><p>Применить обобщенную линейную модель с другой функцией связи (GLM)</p></li>
 </ul>
 </div>
 </div>
-</div>
 </section>
 <section id="график-остатков-для-наших-данных" class="slide level2">
 <h2>График остатков для наших данных</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">fit =</span> <span class="fu">fitted</span>(model),                               <span class="at">res =</span> <span class="fu">residuals</span>(model)), <span class="fu">aes</span>(<span class="at">x =</span> fit, <span class="at">y =</span> res)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">fit =</span> <span class="fu">fitted</span>(model), <span class="at">res =</span> <span class="fu">residuals</span>(model)), <span class="fu">aes</span>(<span class="at">x =</span> fit, <span class="at">y =</span> res)) <span class="sc">+</span></span>
 <span id="cb37-2"><a href="#cb37-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb37-3"><a href="#cb37-3"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb37-4"><a href="#cb37-4"></a>  <span class="fu">xlab</span>(<span class="st">"Fitted"</span>) <span class="sc">+</span></span>
@@ -1059,8 +1073,16 @@ water_stress -0.1167471 0.008096258 -14.41988 9.249406e-15</code></pre>
 </div></section><section id="проверка-на-гомогенность-дисперсий" class="slide level2">
 <h2>Проверка на гомогенность дисперсий</h2>
 
+<img data-src="images/image-1051634690.png" class="r-stretch quarto-figure-center"><p class="caption">взято из презентации Марины Варфоломеевой</p></section>
+<section id="чек-лист" class="slide level2">
+<h2>Чек-лист</h2>
+<ul>
+<li><p>Ковариация и корреляция</p></li>
+<li><p>Линейная регрессия, интерпретация коэффициентов</p></li>
+<li><p>Ограничения линейной регрессии</p></li>
+</ul>
 
-<img data-src="images/image-1051634690.png" class="r-stretch quarto-figure-center"><p class="caption">взято из презентации Марины Варфоломеевой</p><div class="footer footer-default">
+<div class="footer footer-default">
 
 </div>
 </section></section>
