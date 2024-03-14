@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Elena U">
+
+<title>stats_for_plants - Язык программирования R для анализа данных: лекция 10</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">stats_for_plants</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./lectures.html" rel="" target="">
+ <span class="menu-text">Список лекций</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">О курсе</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#вспомним-материал-предыдущей-лекции" id="toc-вспомним-материал-предыдущей-лекции" class="nav-link active" data-scroll-target="#вспомним-материал-предыдущей-лекции">Вспомним материал предыдущей лекции</a></li>
+  <li><a href="#план-лекции" id="toc-план-лекции" class="nav-link" data-scroll-target="#план-лекции">План лекции</a></li>
+  <li><a href="#коэффициент-детерминации-формула" id="toc-коэффициент-детерминации-формула" class="nav-link" data-scroll-target="#коэффициент-детерминации-формула">Коэффициент детерминации: формула</a></li>
+  <li><a href="#коэффициент-детерминации-график" id="toc-коэффициент-детерминации-график" class="nav-link" data-scroll-target="#коэффициент-детерминации-график">Коэффициент детерминации: график</a></li>
+  <li><a href="#коэффициент-детерминации-расчет" id="toc-коэффициент-детерминации-расчет" class="nav-link" data-scroll-target="#коэффициент-детерминации-расчет">Коэффициент детерминации: расчет</a></li>
+  <li><a href="#коэффициент-детерминации" id="toc-коэффициент-детерминации" class="nav-link" data-scroll-target="#коэффициент-детерминации">Коэффициент детерминации</a></li>
+  <li><a href="#множественная-линейная-регрессия" id="toc-множественная-линейная-регрессия" class="nav-link" data-scroll-target="#множественная-линейная-регрессия">Множественная линейная регрессия</a>
+  <ul class="collapse">
+  <li><a href="#как-собирать-данные" id="toc-как-собирать-данные" class="nav-link" data-scroll-target="#как-собирать-данные">Как собирать данные?</a></li>
+  <li><a href="#данные-для-работы" id="toc-данные-для-работы" class="nav-link" data-scroll-target="#данные-для-работы">Данные для работы</a></li>
+  <li><a href="#формулировка-множественной-линейной-регрессии" id="toc-формулировка-множественной-линейной-регрессии" class="nav-link" data-scroll-target="#формулировка-множественной-линейной-регрессии">Формулировка множественной линейной регрессии</a></li>
+  <li><a href="#смысл-коэффициентов-во-множественной-линейной-модели" id="toc-смысл-коэффициентов-во-множественной-линейной-модели" class="nav-link" data-scroll-target="#смысл-коэффициентов-во-множественной-линейной-модели">Смысл коэффициентов во множественной линейной модели</a></li>
+  <li><a href="#геометрический-смысл" id="toc-геометрический-смысл" class="nav-link" data-scroll-target="#геометрический-смысл">Геометрический смысл</a></li>
+  <li><a href="#нотация-формул-линейных-моделей-в-r" id="toc-нотация-формул-линейных-моделей-в-r" class="nav-link" data-scroll-target="#нотация-формул-линейных-моделей-в-r">Нотация формул линейных моделей в R</a></li>
+  <li><a href="#нотация-формул-линейных-моделей-в-r-1" id="toc-нотация-формул-линейных-моделей-в-r-1" class="nav-link" data-scroll-target="#нотация-формул-линейных-моделей-в-r-1">Нотация формул линейных моделей в R</a></li>
+  <li><a href="#условия-применимости-множественной-линейной-регрессии" id="toc-условия-применимости-множественной-линейной-регрессии" class="nav-link" data-scroll-target="#условия-применимости-множественной-линейной-регрессии">Условия применимости множественной линейной регрессии</a></li>
+  <li><a href="#график-остатков" id="toc-график-остатков" class="nav-link" data-scroll-target="#график-остатков">График остатков</a></li>
+  <li><a href="#влиятельные-наблюдения---выбросы-аутлайеры" id="toc-влиятельные-наблюдения---выбросы-аутлайеры" class="nav-link" data-scroll-target="#влиятельные-наблюдения---выбросы-аутлайеры">Влиятельные наблюдения - выбросы, аутлайеры</a></li>
+  <li><a href="#давайте-построим-модель" id="toc-давайте-построим-модель" class="nav-link" data-scroll-target="#давайте-построим-модель">Давайте построим модель</a></li>
+  <li><a href="#интерпретация-результатов" id="toc-интерпретация-результатов" class="nav-link" data-scroll-target="#интерпретация-результатов">Интерпретация результатов</a></li>
+  <li><a href="#adjusted-r-squared" id="toc-adjusted-r-squared" class="nav-link" data-scroll-target="#adjusted-r-squared">Adjusted R-squared</a></li>
+  <li><a href="#проблема-мультиколлинеарности" id="toc-проблема-мультиколлинеарности" class="nav-link" data-scroll-target="#проблема-мультиколлинеарности">Проблема мультиколлинеарности</a></li>
+  <li><a href="#variance-inflation-factor-для-оценки-мультиколлинеарности" id="toc-variance-inflation-factor-для-оценки-мультиколлинеарности" class="nav-link" data-scroll-target="#variance-inflation-factor-для-оценки-мультиколлинеарности">Variance inflation factor для оценки мультиколлинеарности</a></li>
+  <li><a href="#подсчет-vif" id="toc-подсчет-vif" class="nav-link" data-scroll-target="#подсчет-vif">Подсчет VIF</a></li>
+  <li><a href="#отбор-коррелирующих-предикторов-на-основании-vif" id="toc-отбор-коррелирующих-предикторов-на-основании-vif" class="nav-link" data-scroll-target="#отбор-коррелирующих-предикторов-на-основании-vif">Отбор коррелирующих предикторов на основании VIF</a></li>
+  <li><a href="#отбор-коррелирующих-предикторов-на-основании-vif-1" id="toc-отбор-коррелирующих-предикторов-на-основании-vif-1" class="nav-link" data-scroll-target="#отбор-коррелирующих-предикторов-на-основании-vif-1">Отбор коррелирующих предикторов на основании VIF</a></li>
+  <li><a href="#отбор-моделей" id="toc-отбор-моделей" class="nav-link" data-scroll-target="#отбор-моделей">Отбор моделей</a></li>
+  <li><a href="#уберем-незначимые-предикторы-из-модели-income_inequality" id="toc-уберем-незначимые-предикторы-из-модели-income_inequality" class="nav-link" data-scroll-target="#уберем-незначимые-предикторы-из-модели-income_inequality">Уберем незначимые предикторы из модели: income_inequality</a></li>
+  <li><a href="#уберем-незначимые-предикторы-из-модели-gdp" id="toc-уберем-незначимые-предикторы-из-модели-gdp" class="nav-link" data-scroll-target="#уберем-незначимые-предикторы-из-модели-gdp">Уберем незначимые предикторы из модели: GDP</a></li>
+  <li><a href="#модель-с-дискретными-предикторами" id="toc-модель-с-дискретными-предикторами" class="nav-link" data-scroll-target="#модель-с-дискретными-предикторами">Модель с дискретными предикторами</a></li>
+  <li><a href="#спасибо-за-внимание" id="toc-спасибо-за-внимание" class="nav-link" data-scroll-target="#спасибо-за-внимание">Спасибо за внимание!</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="statR_lecture10.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Язык программирования R для анализа данных: лекция 10</h1>
+<p class="subtitle lead">Множественная линейная регрессия</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Elena U </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="вспомним-материал-предыдущей-лекции" class="level2" style="auto-animate">
+<h2 style="auto-animate" class="anchored" data-anchor-id="вспомним-материал-предыдущей-лекции">Вспомним материал предыдущей лекции</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Что такое ковариация? Что такое коэффициент корреляции?</p>
+<div class="fragment fade-in">
+<p><strong>Ковариация</strong> – это мера совместной изменчивости двух случайных величин</p>
+<p><strong>Коэффициент корреляции</strong> – это статистическая мера степени, в которой изменения значения одной переменной предсказывают изменение значения другой.</p>
+</div></li>
+<li><p>Какие задачи можно решить с помощью линейной регрессии?</p>
+<div class="fragment fade-in">
+<p>Предсказание значений одной переменной на основании другой</p>
+</div></li>
+<li><p>Коэффициент детерминации</p></li>
+<li><p>Ограничения линейной регрессии</p></li>
+</ul>
+</div>
+</section>
+<section id="план-лекции" class="level2">
+<h2 class="anchored" data-anchor-id="план-лекции">План лекции</h2>
+<ul>
+<li><p>Что такое коэффициент детерминации и как он выводится?</p></li>
+<li><p>Множественная линейная регрессия</p></li>
+<li><p>Проблема мультиколлинеарности</p></li>
+<li><p>Отбор моделей</p></li>
+<li><p>Ограничения линейной регрессии</p></li>
+</ul>
+<p>Загрузим нужные библиотеки:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="коэффициент-детерминации-формула" class="level2">
+<h2 class="anchored" data-anchor-id="коэффициент-детерминации-формула">Коэффициент детерминации: формула</h2>
+<p>Обозначается как <span class="math inline">\(R^2\)</span> – доля объясненной дисперсии.</p>
+<p><span class="math display">\[
+R^2 = \frac{SSR}{SST}
+\]</span></p>
+<p><span class="math inline">\(SSR = \sum_i{(\hat{y_i}-\overline{y})^2}\)</span> - объясненная моделью дисперсия.</p>
+<p><span class="math inline">\(SSE = \sum{(y_i - \hat{y_i})^2}\)</span> - необъясненная дисперсия.</p>
+<p><span class="math inline">\(SST = SSR + SSE = \sum_i{(y_i-\overline{y})^2}\)</span> - общая дисперсия.</p>
+<p>Объясненную моделью дисперсию можно вычислить как разницу между общей дисперсией и необъясненной дисперсией (<span class="math inline">\(SSR = SST - SSE\)</span>).</p>
+<p>Разберем на рисунке:</p>
+</section>
+<section id="коэффициент-детерминации-график" class="level2">
+<h2 class="anchored" data-anchor-id="коэффициент-детерминации-график">Коэффициент детерминации: график</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="statR_lecture10_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="коэффициент-детерминации-расчет" class="level2">
+<h2 class="anchored" data-anchor-id="коэффициент-детерминации-расчет">Коэффициент детерминации: расчет</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">1.8</span>, <span class="fl">2.4</span>, <span class="fl">3.5</span>, <span class="fl">3.9</span>, <span class="fl">4.4</span>, <span class="fl">5.1</span>, <span class="fl">5.6</span>, <span class="fl">6.3</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span><span class="fu">c</span>(<span class="fl">1.4</span>, <span class="fl">2.6</span>, <span class="fl">1.0</span>, <span class="fl">3.7</span>, <span class="fl">5.5</span>, <span class="fl">3.2</span>, <span class="fl">3.0</span>, <span class="fl">4.9</span>, <span class="fl">6.3</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">sum</span>((df<span class="sc">$</span>y <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>y))<span class="sc">^</span><span class="dv">2</span>) <span class="co"># общая сумма квадратов, SST</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ssr <span class="ot">&lt;-</span> sst <span class="sc">-</span> <span class="fu">sum</span>((df<span class="sc">$</span>y <span class="sc">-</span> <span class="fu">predict</span>(model, <span class="fu">data.frame</span>(<span class="at">x =</span> df<span class="sc">$</span>x)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> ssr <span class="sc">/</span> sst</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>r2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6132867</code></pre>
+</div>
+</div>
+<div class="cell" data-output-location="column">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> df)) <span class="co"># все сходится</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.5482 -0.8037  0.1186  0.6186  1.8852 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)   0.5813     0.9647   0.603   0.5658  
+x             0.7778     0.2334   3.332   0.0126 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.19 on 7 degrees of freedom
+Multiple R-squared:  0.6133,    Adjusted R-squared:  0.558 
+F-statistic:  11.1 on 1 and 7 DF,  p-value: 0.01256</code></pre>
+</div>
+</div>
+</section>
+<section id="коэффициент-детерминации" class="level2">
+<h2 class="anchored" data-anchor-id="коэффициент-детерминации">Коэффициент детерминации</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="statR_lecture10_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+<p><img src="images/image-1678901130.png" class="img-fluid"></p>
+</section>
+<section id="множественная-линейная-регрессия" class="level1">
+<h1>Множественная линейная регрессия</h1>
+<section id="как-собирать-данные" class="level2">
+<h2 class="anchored" data-anchor-id="как-собирать-данные">Как собирать данные?</h2>
+<p>Важно помнить, что Garbage in - Garbage out.</p>
+<p><img src=".\posts/lectures/images/image-1617963202.png" class="img-fluid" alt="Проблема мультиколлинеарности"></p>
+<ul>
+<li><p>Независимость наблюдений.</p></li>
+<li><p>Проверка на наличие скрытых (группирующих) переменных.</p></li>
+<li><p>Учет пространственных и временных автокорреляций.</p></li>
+</ul>
+</section>
+<section id="данные-для-работы" class="level2">
+<h2 class="anchored" data-anchor-id="данные-для-работы">Данные для работы</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>happy_score_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/ubogoeva/Rcourse_NSU/master/posts/lectures/data/happyscore_income.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 111 Columns: 11
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: "," chr
+(3): country...1, region, country...11 dbl (8): adjusted_satisfaction,
+avg_satisfaction, std_satisfaction, avg_inco...
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `country` -&gt; `country...1`
+• `country` -&gt; `country...11`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>happy_score_data <span class="ot">&lt;-</span> happy_score_data <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">country =</span> country...<span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span>country...<span class="dv">11</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(happy_score_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+  country    adjusted_satisfaction avg_satisfaction std_satisfaction avg_income
+  &lt;chr&gt;                      &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt;
+1 Armenia                       37              4.9             2.42      2097.
+2 Angola                        26              4.3             3.19      1449.
+3 Argentina                     60              7.1             1.91      7101.
+4 Austria                       59              7.2             2.11     19457.
+5 Australia                     65              7.6             1.8      19917 
+6 Azerbaijan                    46              5.8             2.27      3382.
+# ℹ 5 more variables: median_income &lt;dbl&gt;, income_inequality &lt;dbl&gt;,
+#   region &lt;chr&gt;, happyScore &lt;dbl&gt;, GDP &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Датасет с каггла о связи ВВП и счастья населения.</p>
+</section>
+<section id="формулировка-множественной-линейной-регрессии" class="level2">
+<h2 class="anchored" data-anchor-id="формулировка-множественной-линейной-регрессии">Формулировка множественной линейной регрессии</h2>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_nx_n + \epsilon
+\]</span></p>
+<p>Попробуем предсказать <code>happyScore</code>, основываясь на остальных переменных и выберем лучшую модель.</p>
+</section>
+<section id="смысл-коэффициентов-во-множественной-линейной-модели" class="level2">
+<h2 class="anchored" data-anchor-id="смысл-коэффициентов-во-множественной-линейной-модели">Смысл коэффициентов во множественной линейной модели</h2>
+<p>Интерсепт - значение зависимой переменной, когда все независимые равны нулю.</p>
+<p><strong>Коэффициент перед предиктором</strong>: показывает на сколько единиц изменится значение зависимой переменной в случае, если значение <strong>этого</strong> предиктора изменится на единицу, а все <strong>другие</strong> показатели не изменятся.</p>
+</section>
+<section id="геометрический-смысл" class="level2">
+<h2 class="anchored" data-anchor-id="геометрический-смысл">Геометрический смысл</h2>
+<p>Для двух коэффициентов теперь фитим (подгоняем) плоскость в трехмерном пространстве.</p>
+<p><span class="math inline">\(Y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon\)</span></p>
+<p><img src=".\posts/lectures/images/image-1714685837.png" class="img-fluid" width="471"></p>
+<p>Для большего количества предикторов невозможно нарисовать :(</p>
+</section>
+<section id="нотация-формул-линейных-моделей-в-r" class="level2">
+<h2 class="anchored" data-anchor-id="нотация-формул-линейных-моделей-в-r">Нотация формул линейных моделей в R</h2>
+<table class="table">
+<colgroup>
+<col style="width: 80%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Модель</th>
+<th>Формула</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Простая линейная регрессия</td>
+<td>Y ~ X</td>
+</tr>
+<tr class="even">
+<td>Простая линейная регрессия, без интерсепта b<sub>0</sub></td>
+<td>Y ~ -1 + X</td>
+</tr>
+<tr class="odd">
+<td>Уменьшенная простая линейная регрессия (только интерсепт)</td>
+<td>Y ~ 1<br>
+Y ~ 1 - X</td>
+</tr>
+<tr class="even">
+<td>Множественная линейная регрессия</td>
+<td>Y ~ X1 + X2</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="нотация-формул-линейных-моделей-в-r-1" class="level2">
+<h2 class="anchored" data-anchor-id="нотация-формул-линейных-моделей-в-r-1">Нотация формул линейных моделей в R</h2>
+<table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Элемент формулы</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>:</td>
+<td>Взаимодействие предикторов<br>
+Y ~ X1 + X2 + X1:X2</td>
+</tr>
+<tr class="even">
+<td>*</td>
+<td><p>Все возможные взаимодействия</p>
+<p>Y ~ X1*X2 тоже самое, что и<br>
+Y ~ X1+X2 + X1:X2</p></td>
+</tr>
+<tr class="odd">
+<td>.</td>
+<td><p>Y ~ .</p>
+<p>В правой части формулы записываются все переменные из датафрейма, кроме Y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="условия-применимости-множественной-линейной-регрессии" class="level2" style="font-size: 90%">
+<h2 style="font-size: 90%" class="anchored" data-anchor-id="условия-применимости-множественной-линейной-регрессии">Условия применимости множественной линейной регрессии</h2>
+<ol type="1">
+<li><p>Линейная связь (=отсутствие паттерна на графике остатков).</p></li>
+<li><p>Независимость наблюдений.</p></li>
+<li><p>Гомогенность дисперсий.</p></li>
+<li><p>Нормально распределение ошибок (остатков).</p></li>
+<li><p>Отсутствие влиятельных наблюдений.</p></li>
+<li><p><strong>Отсутствие коллинеарности предикторов (для множественной регрессии)</strong></p></li>
+</ol>
+<p>Все условия совпадают с требованиями к простой линейной регрессии + проверка на коллинеарность.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Вообще перечисленные выше условия применимости совпадают и с многими другими статистическими тестами (и это не случайно!)</p>
+</div>
+</div>
+</section>
+<section id="график-остатков" class="level2">
+<h2 class="anchored" data-anchor-id="график-остатков">График остатков</h2>
+<p>Такой вариант графика позволяет оценивать паттерны распределения остатков для нескольких независимых переменных.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="statR_lecture10_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="влиятельные-наблюдения---выбросы-аутлайеры" class="level2">
+<h2 class="anchored" data-anchor-id="влиятельные-наблюдения---выбросы-аутлайеры">Влиятельные наблюдения - выбросы, аутлайеры</h2>
+<p>Оцениваются с помощью расстояния Кука</p>
+<p><span class="math display">\[
+D_i = \frac{\sum{( \color{blue}{\hat{y_{j}}} - \color{red}{\hat{y}_{j(i)}})^2}}{p \; MS_e}
+\]</span></p>
+<p><span class="math inline">\(\color{blue}{\hat{y_j}}\)</span> — значение, предсказанное полной моделью.</p>
+<p><span class="math inline">\(\color{red}{\hat{y}_{j(i)}}\)</span> — значение, предсказанное моделью, построенной без учета <span class="math inline">\(i\)</span>-го значения предиктора</p>
+<p><span class="math inline">\(p\)</span> — количество параметров в модели</p>
+<p><span class="math inline">\(MS_{e}\)</span> — среднеквадратичная ошибка модели (<span class="math inline">\(\hat\sigma^2\)</span>)</p>
+<p>Пороговое значение можно рассчитать по формуле, но вообще существуют разные способы выбора порога:</p>
+<p><span class="math display">\[
+Cutoff = \frac{4}{ n - p}
+\]</span></p>
+<p>Формулы могут быть разные еще и потому, учитывают они интерсепт как оцениваемый параметр или нет.</p>
+</section>
+<section id="давайте-построим-модель" class="level2">
+<h2 class="anchored" data-anchor-id="давайте-построим-модель">Давайте построим модель</h2>
+<p>Предсказание цены дома в зависимости от всех количественных переменных. Сначала отберем все численные переменные (можно строить модель и с дискретными предикторами, но пока построим так) и включим их в модель.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>happy_score_data_numeric <span class="ot">&lt;-</span> happy_score_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(happyScore <span class="sc">~</span> ., happy_score_data_numeric)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ ., data = happy_score_data_numeric)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.23723 -0.28006  0.01552  0.28669  1.07112 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)            2.2183187  2.2722660   0.976    0.331
+adjusted_satisfaction  0.0455447  0.1234767   0.369    0.713
+avg_satisfaction       0.1497964  1.0164274   0.147    0.883
+std_satisfaction      -0.0573383  1.0729419  -0.053    0.957
+avg_income             0.0001944  0.0001290   1.507    0.135
+median_income         -0.0001814  0.0001491  -1.217    0.226
+income_inequality     -0.0085178  0.0099008  -0.860    0.392
+GDP                    0.2758183  0.2600976   1.060    0.291
+
+Residual standard error: 0.4665 on 103 degrees of freedom
+Multiple R-squared:  0.8538,    Adjusted R-squared:  0.8439 
+F-statistic: 85.96 on 7 and 103 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="интерпретация-результатов" class="level2">
+<h2 class="anchored" data-anchor-id="интерпретация-результатов">Интерпретация результатов</h2>
+<p>Все предикторы незначимы, при этом сама модель значима (p-value модели &lt; 0.05). Это говорит о том, что в данных скорее всего есть мультиколлинеарность (про это чуть дальше).</p>
+<p>Вопрос в том, что лучше, включить больше или меньше предикторов в модель?</p>
+<div class="fragment">
+<p>Опасность переобучения (overfitting) -&gt; нарисовать</p>
+</div>
+</section>
+<section id="adjusted-r-squared" class="level2">
+<h2 class="anchored" data-anchor-id="adjusted-r-squared">Adjusted R-squared</h2>
+<p>Модель с бОльшим числом предикторов почти всегда будет иметь больший <span class="math inline">\(R^2\)</span>. Нужно ввести поправочный коэффициент, который штрафует модель за бОльшее число предикторов.</p>
+<p><span class="math display">\[
+R^2_{adj} = 1- (1-R^2)\frac{n-1}{n-p}
+\]</span></p>
+<p>p - количество параметров в модели, n - размер выборки.</p>
+<p>Кроме этого, для отбора количества предикторов модели существует <a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">AIC</a> (информационный критерий Акаике) и <a href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">BIC</a> (байесовский информационный критерий).</p>
+</section>
+<section id="проблема-мультиколлинеарности" class="level2">
+<h2 class="anchored" data-anchor-id="проблема-мультиколлинеарности">Проблема мультиколлинеарности</h2>
+<p>Мультиколлинеарность — наличие линейной зависимости между независимыми переменными в регрессионной модели.</p>
+<p>При наличии мультиколлинеарности оценки параметров неточны, увеличиваются стандартные ошибки, а значит сложно интерпретировать влияние предикторов на отклик.</p>
+</section>
+<section id="variance-inflation-factor-для-оценки-мультиколлинеарности" class="level2">
+<h2 class="anchored" data-anchor-id="variance-inflation-factor-для-оценки-мультиколлинеарности">Variance inflation factor для оценки мультиколлинеарности</h2>
+<p>Для предиктора <span class="math inline">\(i\)</span> считается линейная регрессия, где все остальные предикторы предсказывают предиктор <span class="math inline">\(i\)</span><em>.</em></p>
+<p>Сам VIF-фактор считается на основе полученного R<sup>2</sup> регрессии:</p>
+<p><span class="math display">\[
+VIF = \frac{1}{1 - R_i^2}
+\]</span></p>
+<p>Чем больше <span class="math inline">\(R_i^2\)</span>, тем больше <span class="math inline">\(VIF_i\)</span>. Это означает, что предиктор сам по себе хорошо объясняется другими предикторами. Какой VIF считать большим? Здесь нет единого мнения, но если он выше 3 (4, 5) и особенно если он выше 10, то с этим нужно что-то делать.</p>
+</section>
+<section id="подсчет-vif" class="level2">
+<h2 class="anchored" data-anchor-id="подсчет-vif">Подсчет VIF</h2>
+<p>VIF можно посчитать с помощью функции <code>vif()</code> из пакета <code>car</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Загрузка требуемого пакета: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Присоединяю пакет: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Следующий объект скрыт от 'package:dplyr':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Следующий объект скрыт от 'package:purrr':
+
+    some</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>adjusted_satisfaction      avg_satisfaction      std_satisfaction 
+          1178.079600            960.731610             58.304736 
+           avg_income         median_income     income_inequality 
+           353.275696            350.629194              3.475757 
+                  GDP 
+             5.136846 </code></pre>
+</div>
+</div>
+<p>Здесь конечно экстремальная ситуация в связи с крайне высокой корреляцией переменных. Это видно и при подсчете матрицы корреляций, так что для реальной задачи не очень разумно включать сразу все переменные в модель, не проверив корреляции.</p>
+<p>Как вариант, можно заменить исходные предикторы новыми ортогональными переменными с помощью метода главных компонент (PCA).</p>
+<div class="cell" data-output-location="slide">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot</span>(<span class="fu">cor</span>(happy_score_data_numeric))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="statR_lecture10_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="отбор-коррелирующих-предикторов-на-основании-vif" class="level2">
+<h2 class="anchored" data-anchor-id="отбор-коррелирующих-предикторов-на-основании-vif">Отбор коррелирующих предикторов на основании VIF</h2>
+<p>С помощью базовой функции <code>update()</code> можно убирать сильно коррелирущие предикторы.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_without_adj <span class="ot">&lt;-</span> <span class="fu">update</span>(model_full, .<span class="sc">~</span>. <span class="sc">-</span>adjusted_satisfaction)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_without_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> avg_satisfaction  std_satisfaction        avg_income     median_income 
+         3.013224          1.498450        348.649164        345.961439 
+income_inequality               GDP 
+         3.447902          5.113941 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_without_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ avg_satisfaction + std_satisfaction + 
+    avg_income + median_income + income_inequality + GDP, data = happy_score_data_numeric)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.22844 -0.28686  0.00393  0.29576  1.05390 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        3.0295472  0.5687129   5.327 5.81e-07 ***
+avg_satisfaction   0.5241200  0.0566865   9.246 3.25e-15 ***
+std_satisfaction  -0.4479771  0.1712908  -2.615   0.0102 *  
+avg_income         0.0001890  0.0001276   1.480   0.1418    
+median_income     -0.0001751  0.0001475  -1.187   0.2379    
+income_inequality -0.0081909  0.0098200  -0.834   0.4061    
+GDP                0.2822246  0.2584369   1.092   0.2773    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4646 on 104 degrees of freedom
+Multiple R-squared:  0.8537,    Adjusted R-squared:  0.8452 
+F-statistic: 101.1 on 6 and 104 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Теперь сильно коррелируют <code>avg_income</code> и <code>median_income</code>, что логично и было видно на корреляционном графике. Уберем одну из этих переменных.</p>
+</section>
+<section id="отбор-коррелирующих-предикторов-на-основании-vif-1" class="level2">
+<h2 class="anchored" data-anchor-id="отбор-коррелирующих-предикторов-на-основании-vif-1">Отбор коррелирующих предикторов на основании VIF</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_without_avg_income <span class="ot">&lt;-</span> <span class="fu">update</span>(model_without_adj, .<span class="sc">~</span>. <span class="sc">-</span>avg_income)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_without_avg_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> avg_satisfaction  std_satisfaction     median_income income_inequality 
+         3.000833          1.483673          4.111098          1.412751 
+              GDP 
+         4.530807 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_without_avg_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ avg_satisfaction + std_satisfaction + 
+    median_income + income_inequality + GDP, data = happy_score_data_numeric)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.22061 -0.27108  0.02655  0.30850  1.09323 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        2.605e+00  4.940e-01   5.274 7.21e-07 ***
+avg_satisfaction   5.295e-01  5.689e-02   9.307 2.19e-15 ***
+std_satisfaction  -4.732e-01  1.714e-01  -2.760  0.00681 ** 
+median_income      4.193e-05  1.617e-05   2.594  0.01084 *  
+income_inequality  2.978e-03  6.321e-03   0.471  0.63860    
+GDP                4.114e-01  2.446e-01   1.682  0.09559 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4672 on 105 degrees of freedom
+Multiple R-squared:  0.8506,    Adjusted R-squared:  0.8435 
+F-statistic: 119.5 on 5 and 105 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="отбор-моделей" class="level2">
+<h2 class="anchored" data-anchor-id="отбор-моделей">Отбор моделей</h2>
+<p>Есть несколько основных стратегий отбора</p>
+<ol type="1">
+<li>Backward selection: full null -&gt; null model</li>
+<li>Forward selection: null model -&gt; full model</li>
+<li>Mixed selection: комбинация 1 и 2 способа</li>
+</ol>
+</section>
+<section id="уберем-незначимые-предикторы-из-модели-income_inequality" class="level2">
+<h2 class="anchored" data-anchor-id="уберем-незначимые-предикторы-из-модели-income_inequality">Уберем незначимые предикторы из модели: income_inequality</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model_without_ineq <span class="ot">&lt;-</span> <span class="fu">update</span>(model_without_avg_income, .<span class="sc">~</span>. <span class="sc">-</span>income_inequality)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_without_ineq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>avg_satisfaction std_satisfaction    median_income              GDP 
+        2.689961         1.479161         3.636432         4.479075 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_without_ineq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ avg_satisfaction + std_satisfaction + 
+    median_income + GDP, data = happy_score_data_numeric)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.2107 -0.2632  0.0361  0.2976  1.0923 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       2.683e+00  4.641e-01   5.781 7.56e-08 ***
+avg_satisfaction  5.381e-01  5.366e-02  10.028  &lt; 2e-16 ***
+std_satisfaction -4.687e-01  1.705e-01  -2.749  0.00703 ** 
+median_income     3.935e-05  1.515e-05   2.597  0.01073 *  
+GDP               3.991e-01  2.423e-01   1.647  0.10255    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4655 on 106 degrees of freedom
+Multiple R-squared:  0.8503,    Adjusted R-squared:  0.8446 
+F-statistic: 150.5 on 4 and 106 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="уберем-незначимые-предикторы-из-модели-gdp" class="level2">
+<h2 class="anchored" data-anchor-id="уберем-незначимые-предикторы-из-модели-gdp">Уберем незначимые предикторы из модели: GDP</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model_without_gdp <span class="ot">&lt;-</span><span class="fu">lm</span>(happyScore <span class="sc">~</span> avg_satisfaction <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                         std_satisfaction <span class="sc">+</span> median_income, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> happy_score_data_numeric)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_without_gdp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>avg_satisfaction std_satisfaction    median_income 
+        1.781739         1.303235         2.049282 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_without_gdp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ avg_satisfaction + std_satisfaction + 
+    median_income, data = happy_score_data_numeric)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.25075 -0.20623  0.01447  0.29152  1.12332 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       2.423e+00  4.399e-01   5.508 2.52e-07 ***
+avg_satisfaction  5.895e-01  4.402e-02  13.390  &lt; 2e-16 ***
+std_satisfaction -3.719e-01  1.613e-01  -2.305   0.0231 *  
+median_income     5.583e-05  1.146e-05   4.871 3.87e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4692 on 107 degrees of freedom
+Multiple R-squared:  0.8464,    Adjusted R-squared:  0.8421 
+F-statistic: 196.6 on 3 and 107 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="модель-с-дискретными-предикторами" class="level2">
+<h2 class="anchored" data-anchor-id="модель-с-дискретными-предикторами">Модель с дискретными предикторами</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model_region <span class="ot">&lt;-</span> <span class="fu">lm</span>(happyScore <span class="sc">~</span> avg_satisfaction <span class="sc">+</span>       median_income <span class="sc">+</span> region, <span class="at">data =</span> happy_score_data)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = happyScore ~ avg_satisfaction + median_income + 
+    region, data = happy_score_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.4556 -0.2485  0.0000  0.2774  1.1139 
+
+Coefficients:
+                                          Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)                              1.778e+00  6.883e-01   2.584   0.0112
+avg_satisfaction                         4.997e-01  7.021e-02   7.117 1.76e-10
+median_income                            1.078e-04  2.351e-05   4.585 1.33e-05
+region'Central and Eastern Europe'       2.236e-01  5.403e-01   0.414   0.6798
+region'Eastern Asia'                    -1.113e-01  5.877e-01  -0.189   0.8501
+region'Latin America and Caribbean'      5.088e-01  5.661e-01   0.899   0.3710
+region'Middle East and Northern Africa'  1.936e-01  5.750e-01   0.337   0.7371
+region'North America'                   -2.010e-01  5.818e-01  -0.346   0.7304
+region'Southeastern Asia'                1.170e-01  5.850e-01   0.200   0.8419
+region'Southern Asia'                    1.664e-02  6.040e-01   0.028   0.9781
+region'Sub-Saharan Africa'               1.272e-01  5.801e-01   0.219   0.8269
+region'Western Europe'                  -2.708e-01  4.871e-01  -0.556   0.5795
+                                           
+(Intercept)                             *  
+avg_satisfaction                        ***
+median_income                           ***
+region'Central and Eastern Europe'         
+region'Eastern Asia'                       
+region'Latin America and Caribbean'        
+region'Middle East and Northern Africa'    
+region'North America'                      
+region'Southeastern Asia'                  
+region'Southern Asia'                      
+region'Sub-Saharan Africa'                 
+region'Western Europe'                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4742 on 99 degrees of freedom
+Multiple R-squared:  0.8549,    Adjusted R-squared:  0.8387 
+F-statistic: 53.02 on 11 and 99 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="спасибо-за-внимание" class="level2">
+<h2 class="anchored" data-anchor-id="спасибо-за-внимание">Спасибо за внимание!</h2>
+<p>Если понравилось, переходите по <a href="https://www.tinkoff.ru/rm/ubogoeva.elena1/TSRBI31474">ссылке</a>:</p>
+<p><img src="images/qrcode.png" class="img-fluid"></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
