@@ -70,6 +70,14 @@ title: "Список лекций"
 
 Лекция 9. Дизайн эксперимента в селекции растений.
 
+-   Слайды
+
+-   [Запись](https://drive.google.com/drive/folders/1l4yI7T82igj12CCX13onBWoam-kvgIzw?usp=sharing)
+
+-   Данные
+
+-   Скрипт
+
 Лекция 10. Смешанные модели. Решаем скрипт для анализа данных augmented design
 
 Лекция 11. Пакет [`metan`](https://github.com/TiagoOlivoto/metan), часть 1 -- рассчитываем индексы стабильности на основе AMMI.
