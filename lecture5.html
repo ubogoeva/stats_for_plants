@@ -647,7 +647,7 @@ df = \frac{(s_1^2/n_1 + s_2^2 / n_2)^2}{(s_1^2/n_1)^2/(n_1-1) + (s_2^2/n_2)^2/(n
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>))<span class="sc">$</span>p.value) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0473</code></pre>
+<pre><code>[1] 0.0498</code></pre>
 </div>
 </div>
 <p>Вероятность получить ошибку первого рода (то есть найти отличия, там где их на самом деле нет) примерно 0.05.</p>
@@ -659,7 +659,7 @@ df = \frac{(s_1^2/n_1 + s_2^2 / n_2)^2}{(s_1^2/n_1)^2/(n_1-1) + (s_2^2/n_2)^2/(n
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">t.test</span>(<span class="fu">rlnorm</span>(<span class="dv">30</span>), <span class="fu">rlnorm</span>(<span class="dv">30</span>))<span class="sc">$</span>p.value) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0423</code></pre>
+<pre><code>[1] 0.0356</code></pre>
 </div>
 </div>
 <p>Вероятность ошибки первого рода даже меньше!</p>
