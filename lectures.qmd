@@ -89,4 +89,8 @@ title: "Список лекций"
 
 Лекция 11. Пакет [`metan`](https://github.com/TiagoOlivoto/metan), часть 1 -- рассчитываем индексы стабильности на основе AMMI.
 
+-   [Запись](https://drive.google.com/drive/folders/1J--OWX7kk8eV2P6AKAPvLicCJbd3NYJM)
+
+-   [Скрипт](https://github.com/ubogoeva/stats_for_plants/blob/master/R/AMMI_and_GGEbiplot.R)
+
 Лекция 12. Пакет [`metan`](https://github.com/TiagoOlivoto/metan) часть 2 -- построение GGE биплота для графического отображения взаимодействия генотип-среда. Учимся интерпретировать РСА.
